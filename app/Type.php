@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Type extends Model
 {
-     public function Offre()
+     public function offre()
     {
         return $this->hasMany('App\Offre');
     }

@@ -22,5 +22,5 @@ class Profil extends Model
     {
         return $this->belongsToMany('App\Message');
     }
-}
+
 }

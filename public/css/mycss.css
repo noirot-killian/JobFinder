@@ -1,3 +1,7 @@
+header .d-flex li.nav-item {
+  align-items: center;
+}
+
 .bd-placeholder-img 
 {
   font-size: 1.125rem;

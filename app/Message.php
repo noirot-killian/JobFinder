@@ -8,7 +8,7 @@ class Message extends Model
 {
     public function profil_expedier()
     {
-        return $this->hasOne('App\Profil');
+        return $this->belongsTo('App\Profil','profil_id');
     }
     public function profil_destiner()
     {

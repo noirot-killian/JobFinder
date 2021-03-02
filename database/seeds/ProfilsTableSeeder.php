@@ -21,7 +21,7 @@ class ProfilsTableSeeder extends Seeder
 				'mdp' => bcrypt('secret'),
 				'ville' => Str::random(10),
 				'CP' => Str::random(5),
-				'tel' => 'XX.XX.XX.XX.XX',
+				'tel' => 'XX.XX.XX.XX',
 				'CV' => 'cv.pdf',
 				'premCoO/N' => 0,
 				'isAdminO/N' => 0,

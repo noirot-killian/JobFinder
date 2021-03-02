@@ -8,7 +8,7 @@ class Offre extends Model
 {
      public function type()
     {
-        return $this->hasOne('App\Type');
+        return $this->belongsTo('App\Type');
     }
      public function profil_postuler()
     {
@@ -16,6 +16,6 @@ class Offre extends Model
     }
     public function categorie()
     {
-        return $this->hasOne('App\Categorie');
+        return $this->belongsTo('App\Categorie');
     }
 }

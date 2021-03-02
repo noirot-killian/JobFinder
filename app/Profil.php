@@ -6,19 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profil extends Model
 {
-    public function profil_postule()
+    public function profil_postuler()
     {
-        return $this->belongsToMany('App\Profil');
+        return $this->belongsToMany('App\Offre');
     }
     public function categorie()
     {
-        return $this->hasOne('App\Categorie');
+        return $this->belongsTo('App\Categorie');
     }
-    public function message_expedie()
+    public function message_expedier()
     {
         return $this->hasMany('App\Message');
     }
-    public function message_destine()
+    public function message_destiner()
     {
         return $this->belongsToMany('App\Message');
     }

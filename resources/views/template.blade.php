@@ -7,13 +7,14 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.79.0">
     
-    <title>Sticky Footer Navbar Template · Bootstrap v5.0</title>
+    <title>JobFinder</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sticky-footer-navbar/">
 
     <!-- Bootstrap core CSS -->
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/mycss.css')}}" rel="stylesheet">
+    <link href="{{asset('css/starter-template.css')}}" rel="stylesheet">
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="img/favicons/apple-touch-icon.png" sizes="180x180">
@@ -24,7 +25,6 @@
     <link rel="icon" href="img/favicons/favicon.ico">
     <meta name="theme-color" content="#7952b3">
 
-
     
     <!-- Custom styles for this template -->
     <link href="css/sticky-footer-navbar.css" rel="stylesheet">
@@ -33,48 +33,48 @@
     
     <header>
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">JobFinder</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="#">Offres</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="#">Emplois</a>
-            </li>
-          </ul>
-          <form class="d-flex">
-          <li class="nav-item">
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">JobFinder</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item active">
+                <a class="nav-link {{request()->routeis('offre.index') ? 'active' : '' }}" aria-current="page" href="{{route('offre.index')}}">Offres</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" aria-current="page" href="#">Emplois</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+            <li class="nav-item">
               <a class="nav-link" href="#">Déconnexion</a>
             </li>
-          </form>
+            </form>
+          </div>
         </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    @section('content')
+      <main class="flex-shrink-0">
+        <div class="container">
+          <h1 class="mt-5">Bienvenue sur le site <b>JobFinder</b></h1>
+          <p class="lead">Vous pouvez naviguer sur les différents onglets pour trouver des offres d'emplois</p>
+        </div>
+      </main>
+    @show
+
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Footer</span>
       </div>
-    </nav>
-  </header>
-
-  <!-- Begin page content -->
-  <main class="flex-shrink-0">
-    <div class="container">
-      <h1 class="mt-5">Bienvenue sur le site <b>JobFinder</b></h1>
-      <p class="lead">Vous pouvez naviguer sur les différents onglets pour trouver des offres d'emplois</p>
-    </div>
-  </main>
-
-  <footer class="footer mt-auto py-3 bg-light">
-    <div class="container">
-      <span class="text-muted">Footer</span>
-    </div>
-  </footer>
-
-
-      <script src="/public/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
+    </footer>
+    
+    <script src="/public/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
   </body>
 </html>

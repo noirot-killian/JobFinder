@@ -15,7 +15,7 @@ class OffreController extends Controller
     public function index()
     {
         $tab = Offre::all();
-        return view('list_offres', compact('tab'));
+        return view('offres/list_offres', compact('tab'));
     }
 
     /**

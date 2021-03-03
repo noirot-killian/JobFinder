@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Offre;
 
 class OffreController extends Controller
 {
@@ -13,7 +14,8 @@ class OffreController extends Controller
      */
     public function index()
     {
-        //
+        $tab = Offre::all();
+        return view('list_offres', compact('tab'));
     }
 
     /**

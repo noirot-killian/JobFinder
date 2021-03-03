@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('template');
 });
+
+Route::resource('offre', 'OffreController');
+Route::resource('message', 'MessageController');
+Route::resource('profil', 'ProfilController');
+Route::resource('categorie', 'CategorieController');
+Route::get('/home', 'HomeController@index')->name('home');
+//Auth::routes();

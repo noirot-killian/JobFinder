@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 Route::resource('offre', 'OffreController');
+Route::get('/offre/show/{id}', 'OffreController@show')->name('offre.show');
 Route::resource('message', 'MessageController');
 Route::resource('profil', 'ProfilController');
 Route::resource('categorie', 'CategorieController');

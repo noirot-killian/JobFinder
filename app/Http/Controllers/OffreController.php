@@ -66,7 +66,8 @@ class OffreController extends Controller
      */
     public function show($id)
     {
-        //
+        $o = Offre::find($id);
+        return view('offres/display_offres', compact('o'));
     }
 
     /**

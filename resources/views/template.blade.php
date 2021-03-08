@@ -42,10 +42,10 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
               <li class="nav-item active">
-                <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Création Offres</a>
+                <a class="nav-link {{request()->routeis('offre.index') ? 'active' : '' }}" aria-current="page" href="{{route('offre.index')}}">Offres</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" aria-current="page" href="#">Emplois</a>
+                <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Ajouter</a>
               </li>
             </ul>
             <form class="d-flex">

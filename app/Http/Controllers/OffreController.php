@@ -25,7 +25,7 @@ class OffreController extends Controller
      */
     public function create()
     {
-        //
+        return view('offres/create_offres');
     }
 
     /**

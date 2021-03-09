@@ -16,6 +16,12 @@ class ProfilController extends Controller
         //
     }
 
+    public function __construct() 
+    { 
+         $this->middleware('auth'); 
+         $this->middleware('is_admin')->only(['']);  
+    } 
+
     /**
      * Show the form for creating a new resource.
      *

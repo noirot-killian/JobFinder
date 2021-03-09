@@ -50,14 +50,22 @@
             </ul>
             <form class="d-flex">
             <li class="nav-item">
-              <a class="nav-link" href="#">Déconnexion</a>
+             
+         @if (auth::check())
+          Bonjour {{Auth::user()->name}}
+          {!! Form::open(['url'=> route('logout'), 'method' => 'post']) !!}
+            <input class="btn btn-primary" type="submit" value="Se deconnecter" />
+        {!! Form::close() !!}
+        @else
+          <a href="login" class="btn btn-primary">Se connecter</a>
+          <a href="register" class="btn btn-primary">S'enregistrer</a>
+        @endif
             </li>
             </form>
           </div>
         </div>
       </nav>
     </header>
-
     <!-- Begin page content -->
     @section('content')
       <main class="flex-shrink-0">

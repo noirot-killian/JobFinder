@@ -12,3 +12,4 @@ npm-debug.log
 yarn-error.log
 composer.lock
 database/migrations/2021_03_08_154312_create_offre_profil_2.php
+composer.lock

@@ -11,10 +11,17 @@ class CategorieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         //
     }
+
+    public function __construct() 
+    { 
+         $this->middleware('auth'); 
+         $this->middleware('is_admin')->only(['']);  
+    } 
 
     /**
      * Show the form for creating a new resource.

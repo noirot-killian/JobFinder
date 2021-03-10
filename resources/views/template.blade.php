@@ -47,13 +47,17 @@
               <li class="nav-item active">
                 <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Ajouter</a>
               </li>
+              <li class="nav-item active">
+                <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Mes postulations</a>
+              </li>
             </ul>
-            <form class="d-flex">
+
             <li class="nav-item">
              
          @if (auth::check())
           Bonjour {{Auth::user()->name}}
           {!! Form::open(['url'=> route('logout'), 'method' => 'post']) !!}
+
             <input class="btn btn-primary" type="submit" value="Se deconnecter" />
         {!! Form::close() !!}
         @else
@@ -61,7 +65,7 @@
           <a href="register" class="btn btn-primary">S'enregistrer</a>
         @endif
             </li>
-            </form>
+
           </div>
         </div>
       </nav>

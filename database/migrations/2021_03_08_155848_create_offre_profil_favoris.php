@@ -30,7 +30,7 @@ class CreateOffreProfilFavoris extends Migration
      */
     public function down()
     {
-        Schema::table('offres_profils', function (Blueprint $table) {
+        Schema::table('offres_profils_favoris', function (Blueprint $table) {
             $table->dropForeign('offre_id');
             $table->dropForeign('profil_id');
         });

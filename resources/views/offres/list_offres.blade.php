@@ -14,6 +14,7 @@
 	      <th scope="col">Durée</th>
 	      <th scope="col">Entreprise</th>
 	      <th scope="col">Ville</th>
+	      <th scope="col">Favoris</th>
 	      <th scope="col">Détails</th>
 	    </tr>
 	</thead>
@@ -25,7 +26,15 @@
 	      	<td>{{$ligne->durée}}</td>
 	      	<td>{{$ligne->entreprise}}</td>
 	        <td>{{$ligne->ville}}</td>
-	        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>
+	        <td>
+	      
+	        @if($ligne->profil_favoriser()->find(Auth::user()->profil_id))
+	        	<i class="fas fa-star"></i>
+	        @else
+	        	<i class="far fa-star"></i>
+	        @endif
+	        </td>
+	        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>   
 	    </tr>
 	</tbody>
   @endforeach

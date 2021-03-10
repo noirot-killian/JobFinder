@@ -13,7 +13,7 @@ class CreateOffresProfilsTable extends Migration
      */
     public function up()
     {
-        Schema::create('offres_profils', function (Blueprint $table) {
+        Schema::create('offre_profil', function (Blueprint $table) {
             $table->unsignedBigInteger('offre_id');
             $table->foreign('offre_id')->references('id')->on('offres');
             $table->unsignedBigInteger('profil_id');
@@ -30,10 +30,10 @@ class CreateOffresProfilsTable extends Migration
      */
     public function down()
     {
-        Schema::table('offres_profils', function (Blueprint $table) {
+        Schema::table('offre_profil', function (Blueprint $table) {
             $table->dropForeign('offre_id');
             $table->dropForeign('profil_id');
         });
-        Schema::dropIfExists('offres_profils');
+        Schema::dropIfExists('offre_profil');
     }
 }

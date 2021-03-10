@@ -30,4 +30,9 @@ class Profil extends Model
     {
         return $this->belongsToMany('App\Message');
     }
+
+    public function users()
+    {
+        return $this->hasOne('App\users');
+    }
 }

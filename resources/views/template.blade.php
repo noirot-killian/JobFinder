@@ -15,6 +15,7 @@
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/mycss.css')}}" rel="stylesheet">
     <link href="{{asset('css/starter-template.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="img/favicons/apple-touch-icon.png" sizes="180x180">
@@ -54,10 +55,9 @@
 
             <li class="nav-item">
              
-         @if (auth::check())
+        @if (auth::check())
           Bonjour {{Auth::user()->name}}
           {!! Form::open(['url'=> route('logout'), 'method' => 'post']) !!}
-
             <input class="btn btn-primary" type="submit" value="Se deconnecter" />
         {!! Form::close() !!}
         @else

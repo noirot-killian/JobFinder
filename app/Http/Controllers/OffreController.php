@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Offre;
+use App\Categorie;
+use App\Profil;
 
 class OffreController extends Controller
 {
@@ -20,8 +22,8 @@ class OffreController extends Controller
 
     public function __construct() 
     { 
-         $this->middleware('auth'); 
-         $this->middleware('is_admin')->only(['']);  
+       //  $this->middleware('auth'); 
+        // $this->middleware('is_admin')->only(['']);  
     } 
 
     /**
@@ -31,7 +33,8 @@ class OffreController extends Controller
      */
     public function create()
     {
-        return view('offres/create_offres');
+        $tabCateg = Categorie::pluck('designation', 'id');
+        return view('offres/create_offres',compact('tabCateg'));
     }
 
     /**
@@ -108,5 +111,19 @@ class OffreController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addFavorite($idOffre, $idProfil)
+    {
+        $o1 = Offre::find($idOffre);
+        $p1 = Profil::find($idProfil);
+        $o1->profil_favoriser()->attach($p1);
+    }
+    
+    public function removeFavorite($idOffre, $idProfil)
+    {
+        $o2 = Offre::find($idOffre);
+        $p2 = Profil::find($idProfil);
+        $o2->profil_favoriser()->detach($p2);
     }
 }

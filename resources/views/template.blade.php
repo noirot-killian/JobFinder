@@ -80,12 +80,15 @@
       </main>
     @show
 
-    <footer class="footer mt-auto py-3 bg-light">
-      <div class="container">
-        <span class="text-muted">Footer</span>
-      </div>
-    </footer>
     
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"/></script>
+    
+    <script language="JavaScript">
+      @section('script')
+
+      @show
+    </script>
+
     <script src="/public/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
   </body>

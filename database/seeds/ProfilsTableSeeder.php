@@ -16,9 +16,7 @@ class ProfilsTableSeeder extends Seeder
 	        DB::table('profils')->insert([
 				'nom' => Str::random(10),
 				'prenom' => Str::random(10),
-				'pseudo' => Str::random(4),
-				'email' => Str::random(10).'@gmail.com',
-				'mdp' => bcrypt('secret'),
+				'adresse' => Str::random(15),
 				'ville' => Str::random(10),
 				'CP' => Str::random(5),
 				'tel' => 'XX.XX.XX.XX',

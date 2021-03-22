@@ -30,3 +30,5 @@ Route::resource('categorie', 'CategorieController');
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 Route::post('ajaxRequest', 'AjaxController@test')->name('ajaxRequest.test');
+Route::get('site-register', 'SiteAuthController@siteRegister');
+Route::post('site-register', 'SiteAuthController@siteRegisterPost');

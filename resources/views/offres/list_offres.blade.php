@@ -4,6 +4,13 @@
 	@parent - Liste des offres
 @stop
 
+@section('titre')
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h1 class="mt-5">Liste des <b>offres</b> </h1>
+        </div>
+    </main>
+@stop
 @section('content')
 <br>
 <table class="table table-dark">
@@ -23,7 +30,7 @@
 	    <tr>
 	    	<td>{{$ligne->type->nom}}</td>
 	      	<td>{{$ligne->intitule}}</td>
-	      	<td>{{$ligne->durée}}</td>
+	      	<td>{{$ligne->duree}}</td>
 	      	<td>{{$ligne->entreprise}}</td>
 	        <td>{{$ligne->ville}}</td>
 	        <td>

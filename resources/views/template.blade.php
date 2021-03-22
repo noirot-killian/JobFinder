@@ -48,9 +48,9 @@
               <li class="nav-item active">
                 <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Ajouter</a>
               </li>
-              <li class="nav-item active">
+              <!--<li class="nav-item active">
                 <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Mes postulations</a>
-              </li>
+              </li>-->
             </ul>
 
             <li class="nav-item">
@@ -59,7 +59,7 @@
           Bonjour {{Auth::user()->name}}
           {!! Form::open(['url'=> route('logout'), 'method' => 'post']) !!}
             <input class="btn btn-primary" type="submit" value="Se deconnecter" />
-        {!! Form::close() !!}
+          {!! Form::close() !!}
         @else
           <a href="login" class="btn btn-primary">Se connecter</a>
           <a href="register" class="btn btn-primary">S'enregistrer</a>
@@ -70,14 +70,30 @@
         </div>
       </nav>
     </header>
+    
+    @if(request()->session()->get('success')) 
+      <div class="alert alert-success" role="alert">
+        {{request()->session()->get('success')}}
+      </div>
+    @endif
+
+    <!-- !!!{{request()->session()->get('errors')}}!!! -->
+    @if(request()->session()->get('errors'))
+      <div class="alert alert-danger" role="alert">
+        {{request()->session()->get('errors')}}
+      </div>
+    @endif
     <!-- Begin page content -->
-    @section('content')
+    @section('titre')
       <main class="flex-shrink-0">
         <div class="container">
           <h1 class="mt-5">Bienvenue sur le site <b>JobFinder</b></h1>
           <p class="lead">Vous pouvez naviguer sur les différents onglets pour trouver des offres d'emplois</p>
         </div>
       </main>
+    @show
+
+    @section('content')
     @show
 
     

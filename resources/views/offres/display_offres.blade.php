@@ -3,7 +3,13 @@
 @section('menu')
 	@parent - Détails de l'offre
 @stop
-
+@section('titre')
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h1 class="mt-5">Détails de l'<b>offre</b></h1>
+        </div>
+    </main>
+@stop
 @section('content')
 	<div class="card text-center">
         <div class="card-header">

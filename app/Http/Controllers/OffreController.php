@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Offre;
 use App\Categorie;
 use App\Profil;
+use App\Type;
 
 class OffreController extends Controller
 {
@@ -34,7 +35,8 @@ class OffreController extends Controller
     public function create()
     {
         $tabCateg = Categorie::pluck('designation', 'id');
-        return view('offres/create_offres',compact('tabCateg'));
+        $tabType = Type::pluck('nom', 'id');
+        return view('offres/create_offres',compact('tabCateg'),compact('tabType'));
     }
 
     /**
@@ -45,26 +47,38 @@ class OffreController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+        'intitule' => 'required|string|max:50',
+        'description' => 'required|string|max:255',
+        'duree' => 'nullable|string|max:25',
+        'dateDebut' => 'after:today', /*la date doit être future à la date du jour*/
+        'dateFin' => 'after:today',
+        'ville' => 'required|string|regex:/^[a-zA-Z ]+$/', /*chaîne sans chiffres*/
+        'entreprise' => 'required|string',
+        'contact2' => 'nullable|regex:/(0)[0-9]{9}/|max:12', /*numéro de téléphone correct*/
+        'pdf' => 'mimes:pdf', // le doc doit être un PDF
+        'listCateg' => 'required',
+        'listType' => 'required',
+        ]);
+
         $o=new Offre;
         $o->intitule =  $request->input('intitule');
         $o->description =  $request->input('description');
         $o->duree =  $request->input('duree');
-        $o->ville = $request->input('ville');
+        $o->date_debut = $request->input('dateDebut');
+        $o->date_fin = $request->input('dateFin');
         $o->entreprise = $request->input('entreprise');
-        $o->contact = $request->input('contact');
-
-        $validatedData = $request->validate([
-        'intitule' => 'required|min:3',
-        'description' => 'required',
-        'duree' => 'required',
-        'ville' => 'required',
-        'entreprise' => 'required',
-        'contact' => 'required'
-
-    ]);
-
+        $o->ville = $request->input('ville');
+        $o->email = $request->input('contact1');
+        $o->tel = $request->input('contact2');
+        $o->PDF = $request->input('pdf');
+        $o->isValid = 0;
+        $o->isArchived = 0;
+        $o->categorie_id = $request->input('listCateg');
+        $o->type_id = $request->input('listType');
         $o->save();
-        return redirect()->route('');
+        $request->session()->flash('success', 'L offre a bien été ajoutée. Elle doit maintenant être validée par l admin avant d être partagée.');
+        return redirect()->route('offre.create');
     }
 
     /**

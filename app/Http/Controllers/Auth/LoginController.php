@@ -49,4 +49,10 @@ class LoginController extends Controller
             ? new JsonResponse([], 204)
             : redirect('/');
     }
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            'g-recaptcha-response' => 'required|captcha',
+        ]);
+    }
 }

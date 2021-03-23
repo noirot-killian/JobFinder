@@ -77,12 +77,7 @@
       </div>
     @endif
 
-    <!-- !!!{{request()->session()->get('errors')}}!!! -->
-    @if(request()->session()->get('errors'))
-      <div class="alert alert-danger" role="alert">
-        {{request()->session()->get('errors')}}
-      </div>
-    @endif
+  
     <!-- Begin page content -->
     @section('titre')
       <main class="flex-shrink-0">

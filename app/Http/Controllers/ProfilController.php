@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Categorie;
+use App\Profil;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class ProfilController extends Controller
 {
@@ -29,7 +33,8 @@ class ProfilController extends Controller
      */
     public function create()
     {
-        //
+        $tabCateg = Categorie::pluck('designation', 'id');
+        return view('profils/create_profils',compact('tabCateg'));
     }
 
     /**
@@ -43,27 +48,25 @@ class ProfilController extends Controller
         $p=new Profil;
         $p->nom =  $request->input('nom');
         $p->prenom =  $request->input('prenom');
-        $p->pseudo =  $request->input('psuedo');
-        $p->mdp = $request->input('mdp');
-        $p->ville = $request->input('ville');
-        $p->cp = $request->input('cp');
-        $p->mail = $request->input('mail');
-        $p->tel = $request->input('tel');
+        $p->ville =  $request->input('ville');
+        $p->adresse =  $request->input('adresse');
+        $p->cp =  $request->input('cp');
+        $p->tel =  $request->input('tel');
+        $p->CV = $request->input('cv');
+        $p->categorie_id = $request->input('listCateg');
+        $p->save();
+        $u = new User();
+        $u->name=$request->input('name');
+        $u->email=$request->input('email');
+        $u->password=Hash::make($request->input('password'));
+        $u->profil()->associate($p);
+        $u->save();
 
         $validatedData = $request->validate([
-        'nom' => 'required|min:3',
-        'prenom' => 'required',
-        'pseudo' => 'required',
-        'mdp' => 'required|min:5',
-        'ville' => 'required',
-        'cp' => 'required|max:5',
-        'mail' => 'required',
-        'tel' => 'required|max:10'
+        'g-recaptcha-response' => 'required|captcha',]);
+        $request->session()->flash('success', 'Profil bien créer.');
 
-    ]);
-
-        $p->save();
-        return redirect()->route('');
+        return redirect()->route('profil.create');
     }
 
     /**

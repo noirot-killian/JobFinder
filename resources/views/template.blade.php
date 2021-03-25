@@ -48,9 +48,9 @@
               <li class="nav-item active">
                 <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Ajouter</a>
               </li>
-              <!--<li class="nav-item active">
-                <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Mes postulations</a>
-              </li>-->
+              <li class="nav-item active">
+                <a class="nav-link {{request()->routeis('profil.create') ? 'active' : '' }}" aria-current="page" href="{{route('profil.create')}}">Créer un profil</a>
+              </li>
             </ul>
 
             <li class="nav-item">

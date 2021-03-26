@@ -33,6 +33,11 @@
         margin-right: 1040px;
     }
 
+    #btnModifier, #btnAnnuler
+    {
+        width: 200px;
+    }
+
     textarea 
     {
         width: 30em;
@@ -41,19 +46,19 @@
 
 </style>
 
-{!! Form::open(['url' => route('offre.update',[$o->id]), 'method' => 'put', 'enctype' => 'multipart/form-data']) !!}
+{!! Form::open(['url' => route('offre.update',[$uneOffre->id]), 'method' => 'put', 'enctype' => 'multipart/form-data']) !!}
 	@csrf
 	<div class="form-group" id="formIntitule">
         <label for="titre"><b> Intitulé : </b></label>
-        <input name="intitule" value="{{$o->intitule}}" type="text" class="form-control" id="titre" placeholder="Saisissez l'intitulé de l'offre">
-        @error('intitule')
+        <input name="newIntitule" value="{{$uneOffre->intitule}}" type="text" class="form-control" id="titre" placeholder="Saisissez l'intitulé de l'offre">
+        @error('newIntitule')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formDescription">
         <label for="desc"><b> Description : </b></label>
-        <textarea name="description" value="{{old('description')}}" id="desc" class="form-control"placeholder="Saisissez une description"></textarea>
-        @error('description')
+        <textarea name="newDescription" id="desc" class="form-control"placeholder="Saisissez une description">{{$uneOffre->description}}</textarea>
+        @error('newDescription')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
@@ -61,9 +66,9 @@
     <div id="formCateg">
         <label><b> Catégorie : </b></label>
         <div>
-            {!!Form::select('listCateg', $tabCateg, null, ['class'=>'form-control']) !!}
+            {!!Form::select('newListC', $lesCategories, $uneOffre->categorie_id, ['class'=>'form-control']) !!}
         </div>
-        @error('listCateg')
+        @error('newListC')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
@@ -71,79 +76,82 @@
     <div id="formType">
         <label><b> Type : </b></label>
         <div>
-            {!!Form::select('listType', $tabType, null, ['class'=>'form-control']) !!}
+            {!!Form::select('newListT', $lesTypes, $uneOffre->type_id, ['class'=>'form-control']) !!}
         </div>
-        @error('listType')
+        @error('newListT')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formDurée">
         <label for="dur"><b> Durée : </b></label>
-        <input name="duree" type="text" value="{{old('duree')}}" class="form-control" id="dur" placeholder="Saisissez la durée">
-        @error('duree')
+        <input name="newDuree" type="text" value="{{$uneOffre->duree}}" class="form-control" id="dur" placeholder="Saisissez la durée">
+        @error('newDuree')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formDateDeb">
         <label for="dateD"><b> Date de début : </b></label>
-        <input name="dateDebut" type="date" value="{{old('dateDebut')}}" class="form-control" id="dateD">
-        @error('dateDebut')
+        <input name="newDateDebut" type="date" value="{{$uneOffre->date_debut}}" class="form-control" id="dateD">
+        @error('newDateDebut')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formDateFin">
         <label for="dateF"><b> Date de fin : </b></label>
-        <input name="dateFin" type="date" value="{{old('dateFin')}}" class="form-control" id="dateF">
-        @error('dateFin')
+        <input name="newDateFin" type="date" value="{{$uneOffre->date_fin}}" class="form-control" id="dateF">
+        @error('newDateFin')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formVille">
         <label for="commune"><b> Ville : </b></label>
-        <input name="ville" type="text" value="{{old('ville')}}" class="form-control" id="commune" placeholder="Saisissez la ville">
-        @error('ville')
+        <input name="newVille" type="text" value="{{$uneOffre->ville}}" class="form-control" id="commune" placeholder="Saisissez la ville">
+        @error('newVille')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formEntreprise">
         <label for="entrep"><b> Entreprise : </b></label>
-        <input name="entreprise" type="text" class="form-control" value="{{old('entreprise')}}" id="entrep" placeholder="Saisissez le nom de l'entreprise">
-        @error('entreprise')
+        <input name="newEntreprise" type="text" class="form-control" value="{{$uneOffre->entreprise}}" id="entrep" placeholder="Saisissez le nom de l'entreprise">
+        @error('newEntreprise')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formMail">
         <label for="mail"><b> Mail : </b></label>
-        <input name="contact1" type="email" value="{{old('contact1')}}" class="form-control" id="mail" placeholder="Saisissez une adresse mail">
-        @error('contact1')
+        <input name="newContact1" type="email" value="{{$uneOffre->email}}" class="form-control" id="mail" placeholder="Saisissez une adresse mail">
+        @error('newContact1')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formTel">
         <label for="tel"><b> Téléphone : </b></label>
-        <input name="contact2" type="tel" value="{{old('contact2')}}" class="form-control" id="tel" placeholder="Saisissez un numéro de téléphone">
-        @error('contact2')
+        <input name="newContact2" type="tel" value="{{$uneOffre->tel}}" class="form-control" id="tel" placeholder="Saisissez un numéro de téléphone">
+        @error('newContact2')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formPDF">
         <label for="InputFile"><b> PDF : </b></label>
-        <input type="file" name="pdf" value="{{old('pdf')}}" id="InputFile">
-        @error('pdf')
+        <input type="file" name="newPdf" id="InputFile">
+        @error('newPdf')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
+        <br>
+        <label id="SavedFile" name="pdfSaved"><i>Fichier actuel :</i> {{$uneOffre->PDF}}</label>
     </div>
     <br>
-    <CENTER><button type="submit" class="btn btn-primary">Créer</button></CENTER>
-    <br><br>
+    <CENTER><button type="submit" class="btn btn-primary" id="btnModifier">Modifier</button></CENTER>      
 {!! Form::close() !!}
-
+<br>
+<CENTER><a href="{{route('offre.index')}}" class="btn btn-secondary" id="btnAnnuler">Annuler</a></CENTER>
+<br><br>
 @stop

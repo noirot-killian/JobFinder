@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 Route::resource('offre', 'OffreController');
 Route::get('/offre/show/{id}', 'OffreController@show')->name('offre.show');
+Route::get('/offre/edit/{id}', 'OffreController@edit')->name('offre.edit');
+Route::put('/offre/update/{id}', 'OffreController@update')->name('offre.update');
 
 Route::post('/offre/addFavorite/{idOffre}/{idProfil}', 'OffreController@addFavorite')->name('offre.addFavorite');
 

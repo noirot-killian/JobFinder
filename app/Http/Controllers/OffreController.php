@@ -52,7 +52,7 @@ class OffreController extends Controller
         'description' => 'required|string|max:255',
         'duree' => 'nullable|string|max:25',
         'dateDebut' => 'after:today', /*la date doit être future à la date du jour*/
-        'dateFin' => 'after:today',
+        'dateFin' => 'nullable|after:today',
         'ville' => 'required|string|regex:/^[a-zA-Z ]+$/', /*chaîne sans chiffres*/
         'entreprise' => 'required|string',
         'contact2' => 'nullable|regex:/(0)[0-9]{9}/|max:12', /*numéro de téléphone correct*/
@@ -71,7 +71,24 @@ class OffreController extends Controller
         $o->ville = $request->input('ville');
         $o->email = $request->input('contact1');
         $o->tel = $request->input('contact2');
-        $o->PDF = $request->input('pdf');
+        if($request->hasFile('pdf')) {
+            //get filename with extension
+            $filenamewithextension = $request->file('pdf')->getClientOriginalName();
+      
+            //get filename without extension
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+      
+            //get file extension
+            $extension = $request->file('pdf')->getClientOriginalExtension();
+      
+            //filename to store
+            $filenametostore = $filename.'_'.time().'.'.$extension;
+     
+            //Upload File
+            $request->file('pdf')->storeAs('public/pdf_files', $filenametostore);
+
+            $o->PDF = $filenametostore;
+        }
         $o->isValid = 0;
         $o->isArchived = 0;
         $o->categorie_id = $request->input('listCateg');
@@ -101,7 +118,10 @@ class OffreController extends Controller
      */
     public function edit($id)
     {
-        //
+        $uneOffre = Offre::find($id);
+        $lesCategories = Categorie::pluck('designation', 'id');
+        $lesTypes = Type::pluck('nom', 'id');
+        return view('offres/modify_offres',compact('uneOffre','lesCategories','lesTypes'));
     }
 
     /**
@@ -111,9 +131,57 @@ class OffreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        //
+        $validatedData = $request->validate([
+        'newIntitule' => 'required|string|max:50',
+        'newDescription' => 'required|string|max:255',
+        'newDuree' => 'nullable|string|max:25',
+        'newDateDebut' => 'after:today', /*la date doit être future à la date du jour*/
+        'newDateFin' => 'nullable|after:today',
+        'newVille' => 'required|string|regex:/^[a-zA-Z ]+$/', /*chaîne sans chiffres*/
+        'newEntreprise' => 'required|string',
+        'newContact2' => 'nullable|regex:/(0)[0-9]{9}/|max:12', /*numéro de téléphone correct*/
+        'newPdf' => 'mimes:pdf', // le doc doit être un PDF
+        'newListC' => 'required',
+        'newListT' => 'required',
+        ]);
+
+        $o = Offre::find($id);
+        $o->intitule =  $request->input('newIntitule');
+        $o->description =  $request->input('newDescription');
+        $o->duree =  $request->input('newDuree');
+        $o->date_debut = $request->input('newDateDebut');
+        $o->date_fin = $request->input('newDateFin');
+        $o->entreprise = $request->input('newEntreprise');
+        $o->ville = $request->input('newVille');
+        $o->email = $request->input('newContact1');
+        $o->tel = $request->input('newContact2');
+        if($request->hasFile('newPdf')) {
+            //get filename with extension
+            $filenamewithextension = $request->file('newPdf')->getClientOriginalName();
+      
+            //get filename without extension
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+      
+            //get file extension
+            $extension = $request->file('newPdf')->getClientOriginalExtension();
+      
+            //filename to store
+            $filenametostore = $filename.'_'.time().'.'.$extension;
+     
+            //Upload File
+            $request->file('newPdf')->storeAs('public/pdf_files', $filenametostore);
+
+            $o->PDF = $filenametostore;
+        }
+        $o->isValid = 1;
+        $o->isArchived = 0;
+        $o->categorie_id = $request->input('newListC');
+        $o->type_id = $request->input('newListT');
+        $o->save();
+        $request->session()->flash('success', "L'offre a bien été modifiée.");
+        return redirect()->route('offre.index');
     }
 
     /**
@@ -141,3 +209,5 @@ class OffreController extends Controller
         $o2->profil_favoriser()->detach($p2);
     }
 }
+
+        

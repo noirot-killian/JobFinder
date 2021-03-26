@@ -33,6 +33,11 @@
         margin-right: 1040px;
     }
 
+    #btnCréer
+    {
+        width: 200px;
+    }
+
     textarea 
     {
         width: 30em;
@@ -52,7 +57,7 @@
     </div>
     <div class="form-group" id="formDescription">
         <label for="desc"><b> Description : </b></label>
-        <textarea name="description" value="{{old('description')}}" id="desc" class="form-control"placeholder="Saisissez une description"></textarea>
+        <textarea name="description" id="desc" class="form-control"placeholder="Saisissez une description">{{old('description')}}</textarea>
         @error('description')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
@@ -136,13 +141,13 @@
     <br>
     <div class="form-group" id="formPDF">
         <label for="InputFile"><b> PDF : </b></label>
-        <input type="file" name="pdf" value="{{old('pdf')}}" id="InputFile">
+        <input type="file" name="pdf" id="InputFile">
         @error('pdf')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
-    <CENTER><button type="submit" class="btn btn-primary">Créer</button></CENTER>
+    <CENTER><button type="submit" class="btn btn-primary" id="btnCréer">Créer</button></CENTER>
     <br><br>
 {!! Form::close() !!}
 

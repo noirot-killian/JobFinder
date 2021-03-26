@@ -23,28 +23,29 @@
 	      <th scope="col">Ville</th>
 	      <th scope="col">Favoris</th>
 	      <th scope="col">Détails</th>
+	      <th scope="col">Modifier</th>
 	    </tr>
 	</thead>
   	@foreach($tab as $ligne)
-  	<tbody>
-	    <tr>
-	    	<td>{{$ligne->type->nom}}</td>
-	      	<td>{{$ligne->intitule}}</td>
-	      	<td>{{$ligne->duree}}</td>
-	      	<td>{{$ligne->entreprise}}</td>
-	        <td>{{$ligne->ville}}</td>
-	        <td>
-	      
-	        @if($ligne->profil_favoriser()->find(Auth::user()->profil_id))
-	        	<i class="fas fa-star" id="{{$ligne->id}}"></i>
-	        @else
-	        	<i class="far fa-star" id="{{$ligne->id}}"></i>
-	        @endif
-	        </td>
-	        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>   
-	    </tr>
-	</tbody>
-  @endforeach
+	  	<tbody>
+		    <tr>
+		    	<td>{{$ligne->type->nom}}</td>
+		      	<td>{{$ligne->intitule}}</td>
+		      	<td>{{$ligne->duree}}</td>
+		      	<td>{{$ligne->entreprise}}</td>
+		        <td>{{$ligne->ville}}</td>
+		        <td>
+		        @if($ligne->profil_favoriser()->find(Auth::user()->profil_id))
+		        	<i class="fas fa-star" id="{{$ligne->id}}"></i>
+		        @else
+		        	<i class="far fa-star" id="{{$ligne->id}}"></i>
+		        @endif
+		        </td>
+		        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>
+		        <td> <a href="{{route('offre.edit',['id'=>$ligne->id])}}" class="btn btn-secondary">Modifier</a> </td>  
+		    </tr>
+		</tbody>
+  	@endforeach
 </table>
 @stop
 

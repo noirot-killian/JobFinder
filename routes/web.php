@@ -34,3 +34,6 @@ Auth::routes();
 Route::post('ajaxRequest', 'AjaxController@test')->name('ajaxRequest.test');
 Route::get('site-register', 'SiteAuthController@siteRegister');
 Route::post('site-register', 'SiteAuthController@siteRegisterPost');
+
+Route::get('change-password', 'ChangePasswordController@index')->name('change.index');
+Route::post('change-password', 'ChangePasswordController@store')->name('change.password');

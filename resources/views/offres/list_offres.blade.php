@@ -19,11 +19,13 @@
 	      <th scope="col">Type</th>
 	      <th scope="col">Intitulé</th>
 	      <th scope="col">Durée</th>
+	      <th scope="col">Date de début</th>
 	      <th scope="col">Entreprise</th>
 	      <th scope="col">Ville</th>
 	      <th scope="col">Favoris</th>
 	      <th scope="col">Détails</th>
 	      <th scope="col">Modifier</th>
+
 	    </tr>
 	</thead>
   	@foreach($tab as $ligne)
@@ -32,6 +34,7 @@
 		    	<td>{{$ligne->type->nom}}</td>
 		      	<td>{{$ligne->intitule}}</td>
 		      	<td>{{$ligne->duree}}</td>
+		      	<td>{{\Carbon\Carbon::parse($ligne->date_debut)->translatedFormat('d/m/Y')}}</td>
 		      	<td>{{$ligne->entreprise}}</td>
 		        <td>{{$ligne->ville}}</td>
 		        <td>
@@ -42,7 +45,7 @@
 		        @endif
 		        </td>
 		        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>
-		        <td> <a href="{{route('offre.edit',['id'=>$ligne->id])}}" class="btn btn-secondary">Modifier</a> </td>  
+		        <td> <a href="{{route('offre.edit',['id'=>$ligne->id])}}" class="btn btn-secondary">Modifier</a> </td>
 		    </tr>
 		</tbody>
   	@endforeach

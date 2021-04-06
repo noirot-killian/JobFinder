@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Auth;
 class LoginController extends Controller
 {
     /*
@@ -37,7 +38,8 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-     public function logout(Request $request)
+    
+    public function logout(Request $request)
     {
         $this->guard()->logout();
         $request->session()->invalidate();
@@ -49,10 +51,19 @@ class LoginController extends Controller
             ? new JsonResponse([], 204)
             : redirect('/');
     }
+
     protected function validateLogin(Request $request)
     {
         $this->validate($request, [
             'g-recaptcha-response' => 'required|captcha',
         ]);
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if($user->Profil->isFirstCo == 1)
+        {
+            return redirect()->route('change.index');
+        }
     }
 }

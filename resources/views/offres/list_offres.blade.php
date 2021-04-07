@@ -12,8 +12,15 @@
     </main>
 @stop
 @section('content')
+<style>
+	table
+	{
+		margin-left: 20px;
+		margin-right: 20px;
+	}
+</style>
 <br>
-<table class="table table-dark">
+<table id="tabOffres" class="table table-dark">
 	<thead>
 	    <tr>
 	      <th scope="col">Type</th>
@@ -25,11 +32,10 @@
 	      <th scope="col">Favoris</th>
 	      <th scope="col">Détails</th>
 	      <th scope="col">Modifier</th>
-
 	    </tr>
 	</thead>
-  	@foreach($tab as $ligne)
-	  	<tbody>
+	<tbody>
+  		@foreach($tab as $ligne)
 		    <tr>
 		    	<td>{{$ligne->type->nom}}</td>
 		      	<td>{{$ligne->intitule}}</td>
@@ -46,9 +52,9 @@
 		        </td>
 		        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>
 		        <td> <a href="{{route('offre.edit',['id'=>$ligne->id])}}" class="btn btn-secondary">Modifier</a> </td>
-		    </tr>
-		</tbody>
-  	@endforeach
+		    </tr>	
+  		@endforeach
+  	</tbody>
 </table>
 @stop
 
@@ -56,6 +62,13 @@
   $(document).ready(function() 
   {
   	
+  	var table = $('#tabOffres').DataTable({
+    	language: 
+    	{
+        	url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+    	}
+	});
+
     /* Au clic d'une étoile, on affiche l'autre et inversement (pour ajouter/retirer une offre des favoris) */
 
     $(".fa-star").click(function(e){

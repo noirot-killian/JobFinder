@@ -17,7 +17,9 @@ class OffreController extends Controller
      */
     public function index()
     {
-        $tab = Offre::all();
+        // eager loading
+        $tab = Offre::with(['type','categorie','profil_favoriser'])->get(); 
+        // $tab = Offre::all(); -> lazy loading
         return view('offres/list_offres', compact('tab'));
     }
 

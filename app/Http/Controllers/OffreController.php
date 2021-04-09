@@ -210,6 +210,19 @@ class OffreController extends Controller
         $p2 = Profil::find($idProfil);
         $o2->profil_favoriser()->detach($p2);
     }
-}
 
-        
+    public function myFavorites()
+    {
+        $tab = Offre::with(['type','categorie','profil_favoriser'])->get();
+
+        foreach ($tab as $ligne) 
+        {
+            if ($ligne->profil_favoriser->isEmpty()==false)
+            {
+                $tabFav[]=$ligne;
+            }
+        }
+
+        return view('offres/my_favorites', compact('tabFav'));
+    }
+}

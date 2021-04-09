@@ -5,23 +5,49 @@
             <h1 class="mt-5"><b>Connexion</b></h1>
         </div>
     </main>
+    <br>
 @stop
+<style>
+body{
+}
+#formCard
+{
+    margin-right: : 500px;
+    background-color: #4bbea9;
+
+}
+#formLogin3
+{
+ margin-left: 25px;
+}
+#formLogin2, #formMdp2
+{
+    margin-left: 175px;
+}
+#formLogin, #formMdp
+{
+
+width: 500px;
+}
+#formCaptcha 
+    {
+        margin: 0 auto;
+        width: 300px;
+    }
+</style>
 @section('content')
 {!! NoCaptcha::renderJs() !!}
+<body>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
-                <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse Email') }}</label>
+                        <div class="form-group row" id="formLogin2" >
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse Email :') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 "id="formLogin">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
@@ -31,11 +57,12 @@
                                 @enderror
                             </div>
                         </div>
+                        <br>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
+                        <div class="form-group row" id="formMdp2" >
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe :') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" id="formMdp">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                 @error('password')
@@ -45,21 +72,10 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Se rappeler de moi ') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Captcha</label>
+                        <br>
+<br>
+                        <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}" id="formCaptcha">
+                            <label class="col-md-4 control-label"></label>
                             <div class="col-md-6">
                                 {!! app('captcha')->display() !!}
                                 @if ($errors->has('g-recaptcha-response'))
@@ -69,8 +85,9 @@
                                 @endif
                             </div>
                         </div>
-                        
-                        <div class="form-group row mb-0">
+                    <br>
+                        <br>
+                        <div class="form-group row mb-0" id="formLogin3">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
@@ -89,4 +106,5 @@
         </div>
     </div>
 </div>
+</body>
 @endsection

@@ -57,7 +57,6 @@
             <li class="nav-item">
              
         @if (auth::check())
-          Bonjour {{Auth::user()->name}}
           {!! Form::open(['url'=> route('logout'), 'method' => 'post']) !!}
             <input class="btn btn-primary" type="submit" value="Se deconnecter" />
           {!! Form::close() !!}

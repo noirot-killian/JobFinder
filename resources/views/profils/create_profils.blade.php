@@ -32,7 +32,7 @@
     #formCaptcha
     {
         margin: 0 auto;
-        width: 100px;
+        width: 50px;
     }
 
     textarea 
@@ -74,27 +74,23 @@
         @enderror
     </div>
     <div class="form-group" id="formMdp">
-                            <label for="password" class="col-md-4 col-form-label text-md-right"><b>{{ __('Mot de passe :') }}</b></label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Saisissez le mot de passe">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="formConfirmMdp">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right"><b>{{ __('Confirmation mot de passe :') }}</b></label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirmer le mot de passe">
-                            </div>
-                        </div>
-                        <div class="form-group" id="formVille">
+     <label for="password" class="col-md-4 col-form-label text-md-right"><b>{{ __('Mot de passe :') }}</b></label>
+         <div class="col-md-6">
+             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Saisissez le mot de passe">
+                 @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+    </div>
+    </div>
+    <div class="form-group" id="formConfirmMdp">
+    <label for="password-confirm" class="col-md-4 col-form-label text-md-right"><b>{{ __('Confirmation mot de passe :') }}</b></label>
+         <div class="col-md-6">
+            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirmer le mot de passe">
+        </div>
+     </div>
+    <div class="form-group" id="formVille">
         <label for="commune"><b> Ville : </b></label>
         <input name="ville" type="text" value="{{old('ville')}}" class="form-control" id="commune" placeholder="Saisissez la ville">
         @error('ville')
@@ -125,7 +121,7 @@
     <br>
     <div class="form-group" id="formPDF">
         <label for="InputFile"><b> PDF : </b></label>
-        <input type="file" name="pdf" value="{{old('pdf')}}" id="InputFile">
+        <input type="file" name="pdf" id="InputFile">
         @error('pdf')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
@@ -141,17 +137,17 @@
     </div>
     <br>
        <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}" id="formCaptcha">
-                <label class="col-md-4 control-label">Captcha</label>
-                      <div class="col-md-6">
-                            {!! app('captcha')->display() !!}
-                              @if ($errors->has('g-recaptcha-response'))
-                                <span class="help-block">
+            <label class="col-md-4 control-label"></label>
+                <div class="col-md-6">
+                    {!! app('captcha')->display() !!}
+                        @if ($errors->has('g-recaptcha-response'))
+                            <span class="help-block">
                                   <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                                </span>
-                              @endif
-                        </div>
+                            </span>
+                        @endif
+                </div>
       </div>
-<br>
+   <br>
   <CENTER><button type="submit" class="btn btn-primary">Créer</button></CENTER>
   {!! Form::close() !!}
 </form>

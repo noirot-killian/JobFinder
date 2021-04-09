@@ -7,22 +7,31 @@
     </main>
 @stop
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+<style>
+    
+    #formConection
+    {
+        margin-top: 50px;
+        margin-left: 500px;
+        font-size: 40px;
+        font-family: serif;
+    }
+    #formConection
+    {
+         font-weight:20px;
+    }
+  
 
-                <div class="card-body">
+</style>
+<div class="container" id="formConection">
+    <div class="row justify-content-center">
+        <div class="col-md-8"id="formConection2">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
+                         Bonjour {{auth::user()->profil->prenom}} {{ __('vous êtes connecté !') }}
         </div>
     </div>
 </div>

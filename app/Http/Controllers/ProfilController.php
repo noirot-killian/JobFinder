@@ -8,6 +8,7 @@ use App\Profil;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 
+
 class ProfilController extends Controller
 {
     /**
@@ -45,6 +46,18 @@ class ProfilController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+        'g-recaptcha-response' => 'required|captcha',
+        'nom' => 'required|string|max:20',
+        'prenom' => 'required|string|max:20',
+        'ville' => 'required|string|max:25',
+        'adresse' => 'required|string|', 
+        'cp' => 'required|string|max:10',
+        'tel' => 'required|string|regex:/(0)[0-9]{9}/|max:12',
+        'listCateg' => 'required',
+        'name' => 'required', 'string', 'max:255',
+        'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+        'password' => 'required', 'string', 'min:8', 'confirmed',]);
         $p=new Profil;
         $p->nom =  $request->input('nom');
         $p->prenom =  $request->input('prenom');
@@ -52,8 +65,25 @@ class ProfilController extends Controller
         $p->adresse =  $request->input('adresse');
         $p->cp =  $request->input('cp');
         $p->tel =  $request->input('tel');
-        $p->CV = $request->input('cv');
+        $p->CV = $request->input('pdf');
         $p->categorie_id = $request->input('listCateg');
+        /*if($request->hasFile('pdf')) {
+            //get filename with extension
+            $filenamewithextension = $request->file('pdf')->getClientOriginalName();
+      
+            //get filename without extension
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+      
+            //get file extension
+            $extension = $request->file('pdf')->getClientOriginalExtension();
+      
+            //filename to store
+            $filenametostore = $filename.'_'.time().'.'.$extension;
+     
+            //Upload File
+            $request->file('pdf')->storeAs('public/pdf_files', $filenametostore);
+            $p->CV = $filenametostore;
+        }*/
         $p->save();
         $u = new User();
         $u->name=$request->input('name');
@@ -61,14 +91,9 @@ class ProfilController extends Controller
         $u->password=Hash::make($request->input('password'));
         $u->profil()->associate($p);
         $u->save();
-
-        $validatedData = $request->validate([
-        'g-recaptcha-response' => 'required|captcha',]);
         $request->session()->flash('success', 'Profil bien créer.');
-
         return redirect()->route('profil.create');
     }
-
     /**
      * Display the specified resource.
      *

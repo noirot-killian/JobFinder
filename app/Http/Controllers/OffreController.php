@@ -211,7 +211,7 @@ class OffreController extends Controller
         $o2->profil_favoriser()->detach($p2);
     }
 
-    public function myFavorites()
+    public function myFavorites(Request $request)
     {
         $tab = Offre::with(['type','categorie','profil_favoriser'])->get();
 
@@ -223,6 +223,51 @@ class OffreController extends Controller
             }
         }
 
-        return view('offres/my_favorites', compact('tabFav'));
+        if(empty($tabFav))
+        {
+            $request->session()->flash('errors', "Vous n'avez pas d'offres mises en favoris.");
+            return view('offres/list_offres', compact('tab'));
+        }
+        else
+        {
+            return view('offres/my_favorites', compact('tabFav'));
+        }
+    }
+
+    public function addPostulation($idOffre, $idProfil)
+    {
+        $o3 = Offre::find($idOffre);
+        $p3 = Profil::find($idProfil);
+        $o3->profil_postuler()->attach($p3);
+    }
+
+    public function removePostulation($idOffre, $idProfil)
+    {
+        $o4 = Offre::find($idOffre);
+        $p4 = Profil::find($idProfil);
+        $o4->profil_postuler()->detach($p4);
+    }
+
+    public function myPostulations(Request $request)
+    {
+        $tab = Offre::with(['type','categorie','profil_postuler'])->get();
+
+        foreach ($tab as $ligne) 
+        {
+            if ($ligne->profil_postuler->isEmpty()==false)
+            {
+                $tabPostu[]=$ligne;
+            }
+        }
+
+        if(empty($tabPostu))
+        {
+            $request->session()->flash('errors', "Vous n'avez postuler à aucune offre.");
+            return view('offres/list_offres', compact('tab'));
+        }
+        else
+        {
+            return view('offres/my_postulations', compact('tabPostu'));
+        }
     }
 }

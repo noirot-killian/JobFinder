@@ -19,15 +19,20 @@ Route::get('/', function () {
 
 Route::get('/offre/my-favorites', 'OffreController@myFavorites')->name('offre.indexFavorites');
 
+Route::get('/offre/my-postulations', 'OffreController@myPostulations')->name('offre.indexPostulations');
+
 Route::resource('offre', 'OffreController');
 Route::get('/offre/show/{id}', 'OffreController@show')->name('offre.show');
 Route::get('/offre/edit/{id}', 'OffreController@edit')->name('offre.edit');
 Route::put('/offre/update/{id}', 'OffreController@update')->name('offre.update');
 
-
 Route::post('/offre/addFavorite/{idOffre}/{idProfil}', 'OffreController@addFavorite')->name('offre.addFavorite');
 
 Route::post('/offre/removeFavorite/{idOffre}/{idProfil}', 'OffreController@removeFavorite')->name('offre.removeFavorite');
+
+Route::post('/offre/addPostulation/{idOffre}/{idProfil}', 'OffreController@addPostulation')->name('offre.addPostulation');
+
+Route::post('/offre/removePostulation/{idOffre}/{idProfil}', 'OffreController@removePostulation')->name('offre.removePostulation');
 
 Route::resource('message', 'MessageController');
 Route::resource('profil', 'ProfilController');

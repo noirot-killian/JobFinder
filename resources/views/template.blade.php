@@ -53,6 +53,9 @@
                 <a class="nav-link {{request()->routeis('profil.create') ? 'active' : '' }}" aria-current="page" href="{{route('profil.create')}}">Créer un profil</a>
               </li>
               <li class="nav-item active">
+                <a class="nav-link {{request()->routeis('offre.indexPostulations') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexPostulations')}}">Mes postulations</a>
+              </li>
+              <li class="nav-item active">
                 <a class="nav-link {{request()->routeis('offre.indexFavorites') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexFavorites')}}">Mes favoris</a>
               </li>
             </ul>
@@ -77,6 +80,11 @@
     @if(request()->session()->get('success')) 
       <div class="alert alert-success" role="alert">
         {{request()->session()->get('success')}}
+      </div>
+    @endif
+    @if(request()->session()->get('errors'))
+      <div class="alert alert-danger" role="alert">
+        {{request()->session()->get('errors')}}
       </div>
     @endif
 

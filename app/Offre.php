@@ -12,7 +12,7 @@ class Offre extends Model
     }
     public function profil_postuler()
     {
-        return $this->belongsToMany('App\Profil');
+        return $this->belongsToMany('App\Profil','offre_profil_postuler');
     }
 
     public function profil_favoriser()

@@ -21,6 +21,8 @@ Route::get('/offre/my-favorites', 'OffreController@myFavorites')->name('offre.in
 
 Route::get('/offre/my-postulations', 'OffreController@myPostulations')->name('offre.indexPostulations');
 
+Route::get('/offre/my-offers', 'OffreController@myOffers')->name('offre.indexOffers');
+
 Route::resource('offre', 'OffreController');
 Route::get('/offre/show/{id}', 'OffreController@show')->name('offre.show');
 Route::get('/offre/edit/{id}', 'OffreController@edit')->name('offre.edit');

@@ -95,6 +95,7 @@ class OffreController extends Controller
         $o->isArchived = 0;
         $o->categorie_id = $request->input('listCateg');
         $o->type_id = $request->input('listType');
+        $o->profil_id = auth()->user()->profil_id ;
         $o->save();
         $request->session()->flash('success', 'L offre a bien été ajoutée. Elle doit maintenant être validée par l admin avant d être partagée.');
         return redirect()->route('offre.create');
@@ -268,6 +269,31 @@ class OffreController extends Controller
         else
         {
             return view('offres/my_postulations', compact('tabPostu'));
+        }
+    }
+
+    public function myOffers(Request $request)
+    {
+        $tab = Offre::with(['type','categorie','profil_postuler'])->get();
+
+        foreach ($tab as $ligne) 
+        {
+            if ($ligne->profil_id == auth()->user()->profil_id)
+            {
+                $tabOffers[]=$ligne;
+            }
+        }
+
+        if(empty($tabOffers))
+        {
+            $request->session()->flash('errors', "Vous n'avez proposé aucune offre.");
+            $tabCateg = Categorie::pluck('designation', 'id');
+            $tabType = Type::pluck('nom', 'id');
+            return view('offres/create_offres',compact('tabCateg'),compact('tabType'));
+        }
+        else
+        {
+            return view('offres/my_offers', compact('tabOffers'));
         }
     }
 }

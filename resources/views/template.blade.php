@@ -53,6 +53,9 @@
                 <a class="nav-link {{request()->routeis('profil.create') ? 'active' : '' }}" aria-current="page" href="{{route('profil.create')}}">Créer un profil</a>
               </li>
               <li class="nav-item active">
+                <a class="nav-link {{request()->routeis('offre.indexOffers') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexOffers')}}">Mes offres</a>
+              </li>
+              <li class="nav-item active">
                 <a class="nav-link {{request()->routeis('offre.indexPostulations') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexPostulations')}}">Mes postulations</a>
               </li>
               <li class="nav-item active">

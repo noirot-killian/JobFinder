@@ -24,7 +24,12 @@
             <p class="card-text"><b>Ville : </b>{{$o->ville}}</p>
             <p class="card-text"><b>Contact 1 : </b>{{$o->email}}</p>
             <p class="card-text"><b>Contact 2 : </b>{{$o->tel}}</p>
-            <p class="card-text"><b>PDF : </b>{{$o->PDF}}</p>
+            @if(empty($o->PDF))
+                <p> Pas de PDF associé. </p>
+            @else
+                <a href="{{route('profil.getPDF',['filename'=>$o->PDF])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger le PDF</b></a>
+            @endif
+            <br>
 
             @if($o->profil_postuler()->find(Auth::user()->profil_id))
 

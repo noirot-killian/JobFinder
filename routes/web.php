@@ -37,6 +37,8 @@ Route::post('/offre/storeAdmin', 'OffreController@storeAdmin')->name('offre.stor
 
 Route::get('/offre/showAdmin/{id}', 'OffreController@showAdmin')->name('offre.showAdmin');
 
+Route::get('/offre/download/{filename}', 'OffreController@getPDF')->name('profil.getPDF');
+
 Route::resource('offre', 'OffreController');
 Route::get('/offre/show/{id}', 'OffreController@show')->name('offre.show');
 Route::get('/offre/edit/{id}', 'OffreController@edit')->name('offre.edit');
@@ -53,9 +55,17 @@ Route::post('/offre/removePostulation/{idOffre}/{idProfil}', 'OffreController@re
 
 Route::resource('message', 'MessageController');
 
+Route::get('/profil/my-profile', 'ProfilController@myProfile')->name('profil.myProfile');
 Route::get('/profil/download/{filename}', 'ProfilController@getCV')->name('profil.getCV');
+Route::get('/profil/nominate/{id}', 'ProfilController@nominateAdmin')->name('profil.nominate');
+Route::get('/profil/remove/{id}', 'ProfilController@removeAdmin')->name('profil.remove');
 
 Route::resource('profil', 'ProfilController');
+Route::get('/profil/show/{id}', 'ProfilController@show')->name('profil.show');
+Route::get('/profil/edit/{id}', 'ProfilController@edit')->name('profil.edit');
+Route::put('/profil/update/{id}', 'ProfilController@update')->name('profil.update');
+Route::delete('/profil/delete/{id}', 'ProfilController@destroy')->name('profil.destroy');
+
 Route::resource('categorie', 'CategorieController');
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();

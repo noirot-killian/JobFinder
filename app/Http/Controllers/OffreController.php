@@ -7,6 +7,7 @@ use App\Offre;
 use App\Categorie;
 use App\Profil;
 use App\Type;
+use Response;
 
 class OffreController extends Controller
 {
@@ -21,7 +22,7 @@ class OffreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // eager loading
         $tab = Offre::with(['type','categorie','profil_favoriser'])->where('isValid', '=', 1)->where('isArchived', '=', 0)->get(); 
@@ -30,7 +31,9 @@ class OffreController extends Controller
         if($tab->isEmpty())
         {
             $request->session()->flash('errors', "Il n'y a aucune offre sur le site.");
-            return view('create_offres');
+            $tabCateg = Categorie::pluck('designation', 'id');
+            $tabType = Type::pluck('nom', 'id');
+            return view('offres/create_offres',compact('tabCateg'),compact('tabType'));
         }
         else
         {
@@ -246,7 +249,7 @@ class OffreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, Request $request)
+    public static function destroy($id, Request $request)
     {
         $o = Offre::find($id);
         $o->delete();
@@ -351,6 +354,17 @@ class OffreController extends Controller
         {
             return view('offres/my_offers', compact('tabOffers'));
         }
+    }
+
+    public function getPDF($filename)
+    {
+        $file = storage_path()."\app\public\pdf_files\/".$filename;
+
+        $headers = array(
+        'Content-Type: application/pdf',
+        );
+    
+        return Response::download($file, "PDF_offre", $headers);
     }
 
     public function validation($id, Request $request)

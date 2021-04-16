@@ -7,7 +7,7 @@
 @section('titre')
     <main class="flex-shrink-0">
         <div class="container">
-            <h1 class="mt-5">Ajouter un <b>profil</b></h1>
+            <h1 class="mt-5">Modifier mon <b>profil</b></h1>
         </div>
     </main>
 @stop
@@ -48,49 +48,49 @@
 
 </style>
 
-{!! Form::open(['url' => route('profil.store'), 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+{!! Form::open(['url' => route('profil.update',[$p->id]), 'method' => 'put', 'enctype' => 'multipart/form-data']) !!}
   @csrf
   <div id="formCateg">
         <label><b> Catégorie : </b></label>
         <div>
-            {!!Form::select('listCateg', $tabCateg, null, ['class'=>'form-control']) !!}
+            {!!Form::select('newListCateg', $tabCateg, null, ['class'=>'form-control']) !!}
         </div>
-        @error('listCateg')
+        @error('newListCateg')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
   <div class="form-group" id="formNom">
         <label for="nom"><b> Nom : </b></label>
-        <input name="nom" value="{{old('nom')}}" type="text" class="form-control" id="nom" placeholder="Saisissez le nom du profil">
-        @error('nom')
+        <input name="newNom" value="{{$p->nom}}" type="text" class="form-control" id="nom" placeholder="Saisissez le nom du profil">
+        @error('newNom')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formPrenom">
         <label for="prenom"><b> Prenom : </b></label>
-        <input name="prenom" value="{{old('prenom')}}" type="text" class="form-control" id="prenom" placeholder="Saisissez le prenom du profil">
-        @error('prenom')
+        <input name="newPrenom" value="{{$p->prenom}}" type="text" class="form-control" id="prenom" placeholder="Saisissez le prenom du profil">
+        @error('newPrenom')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formEmail">
         <label for="email"><b> Email : </b></label>
-        <input name="email" value="{{old('email')}}" type="text" class="form-control" id="email" placeholder="Saisissez l'adresse email du profil">
-        @error('email')
+        <input name="newEmail" value="{{$email}}" type="text" class="form-control" id="email" placeholder="Saisissez l'adresse email du profil">
+        @error('newEmail')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formPseudo">
         <label for="name"><b> Pseudo : </b></label>
-        <input name="name" value="{{old('name')}}" type="text" class="form-control" id="name" placeholder="Saisissez le pseudo du profil">
-        @error('name')
+        <input name="newName" value="{{$name}}" type="text" class="form-control" id="name" placeholder="Saisissez le pseudo du profil">
+        @error('newName')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formMdp">
      <label for="password" class="col-md-4 col-form-label text-md-right"><b>{{ __('Mot de passe :') }}</b></label>
          <div class="col-md-6">
-             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Saisissez le mot de passe">
+             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="newPassword" required autocomplete="new-password" placeholder="Saisissez le mot de passe">
                  @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -106,65 +106,52 @@
      </div>
     <div class="form-group" id="formVille">
         <label for="commune"><b> Ville : </b></label>
-        <input name="ville" type="text" value="{{old('ville')}}" class="form-control" id="commune" placeholder="Saisissez la ville">
-        @error('ville')
+        <input name="newVille" type="text" value="{{$p->ville}}" class="form-control" id="commune" placeholder="Saisissez la ville">
+        @error('newVille')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formCp">
         <label for="commune"><b> Code Postal : </b></label>
-        <input name="cp" type="text" value="{{old('cp')}}" class="form-control" id="commune" placeholder="Saisissez le Code postal">
-        @error('cp')
+        <input name="newCP" type="text" value="{{$p->CP}}" class="form-control" id="commune" placeholder="Saisissez le Code postal">
+        @error('newCP')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formAdresse">
         <label for="commune"><b> Adresse : </b></label>
-        <input name="adresse" type="text" value="{{old('adresse')}}" class="form-control" id="commune" placeholder="Saisissez l'adresse">
-        @error('adresse')
+        <input name="newAdresse" type="text" value="{{$p->adresse}}" class="form-control" id="commune" placeholder="Saisissez l'adresse">
+        @error('newAdresse')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formTel">
         <label for="tel"><b> Téléphone : </b></label>
-        <input name="tel" type="tel" value="{{old('tel')}}" class="form-control" id="tel" placeholder="Saisissez un numéro de téléphone">
-        @error('tel')
+        <input name="newTel" type="tel" value="{{$p->tel}}" class="form-control" id="tel" placeholder="Saisissez un numéro de téléphone">
+        @error('newTel')$p->tel
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <br>
     <div class="form-group" id="formPDF">
         <label for="InputFile"><b> CV : </b></label>
-        <input type="file" name="cv" id="InputFile">
-        @error('cv')
+        <input type="file" name="newCV" id="InputFile">
+        @error('newCV')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
+        <br>
+        <label id="SavedFile" name="cvSaved"><i>Fichier actuel :</i> {{$p->CV}}</label>
     </div>
     <br>
     <div id="booleen">
-        <div id="isAdmin">
-            <p><b>Cet utilisateur sera t-il administrateur du site ?</b></p>
-            <div>
-                <input type="radio" id="isAdmin" name="admin" value="1">
-                <label for="isAdmin">Oui</label>
-            </div>
-            <div>
-                <input type="radio" id="isNotAdmin" name="admin" value="0">
-                <label for="isNotAdmin">Non</label>
-            </div>
-            @error('admin')
-                <div class="alert alert-danger"> {{ $message }} </div> 
-            @enderror
-        </div>
-        <br>
         <div id="isNotified">
-            <p><b>Cet utilisateur accepte t-il de recevoir des notifications ?</b></p>
+            <p><b>Acceptez-vous de recevoir des notifications ?</b></p>
             <div>
-                <input type="radio" id="isNotified" name="notif" value="1">
+                <input type="radio" id="isNotified" name="newNotif" value="1">
                 <label for="isNotified">Oui</label>
             </div>
             <div>
-                <input type="radio" id="isNotNotified" name="notif" value="0">
+                <input type="radio" id="isNotNotified" name="newNotif" value="0">
                 <label for="isNotNotified">Non</label>
             </div>
             @error('notif')
@@ -173,13 +160,13 @@
         </div>
         <br>
         <div id="isContactable">
-            <p><b>Cet utilisateur accepte t-il d'être joignable par d'autres membres du site ?</b></p>
+            <p><b>Acceptez-vous d'être joignable par d'autres membres du site ?</b></p>
             <div>
-                <input type="radio" id="isContactable" name="joignable" value="1">
+                <input type="radio" id="isContactable" name="newJoignable" value="1">
                 <label for="isContactable">Oui</label>
             </div>
             <div>
-                <input type="radio" id="isNotContactable" name="joignable" value="0">
+                <input type="radio" id="isNotContactable" name="newJoignable" value="0">
                 <label for="isNotContactable">Non</label>
             </div>
             @error('joignable')

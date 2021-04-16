@@ -10,6 +10,12 @@ class Offre extends Model
     {
         return $this->belongsTo('App\Type');
     }
+
+    public function profil()
+    {
+        return $this->belongsTo('App\Profil');
+    }
+
     public function profil_postuler()
     {
         return $this->belongsToMany('App\Profil','offre_profil_postuler');

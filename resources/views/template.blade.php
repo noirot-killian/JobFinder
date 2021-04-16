@@ -60,7 +60,7 @@
                   <a class="nav-link {{request()->routeis('offre.indexFavorites') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexFavorites')}}">Mes favoris</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link {{request()->routeis('profil.index') ? 'active' : '' }}" aria-current="page" href="{{route('profil.index')}}">Mon profil</a>
+                  <a class="nav-link {{request()->routeis('profil.myProfile') ? 'active' : '' }}" aria-current="page" href="{{route('profil.myProfile')}}">Mon profil</a>
                 </li>
               @else
                 @if(auth::check() && auth::user()->profil->isAdmin == 1)
@@ -72,6 +72,9 @@
                   </li>
                   <li class="nav-item active">
                     <a class="nav-link {{request()->routeis('offre.createAdmin') ? 'active' : '' }}" aria-current="page" href="{{route('offre.createAdmin')}}">Ajouter</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link {{request()->routeis('profil.index') ? 'active' : '' }}" aria-current="page" href="{{route('profil.index')}}">Utilisateurs</a>
                   </li>
                   <li class="nav-item active">
                     <a class="nav-link {{request()->routeis('profil.create') ? 'active' : '' }}" aria-current="page" href="{{route('profil.create')}}">Créer un profil</a>

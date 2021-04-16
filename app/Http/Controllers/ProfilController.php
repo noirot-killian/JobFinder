@@ -6,16 +6,17 @@ use Illuminate\Http\Request;
 use App\Categorie;
 use App\Profil;
 use App\User;
+use App\Offre;
 use Illuminate\Support\Facades\Hash;
 use Response;
-
+use Illuminate\Support\Facades\DB;
 
 class ProfilController extends Controller
 {
     public function __construct() 
     { 
         $this->middleware('auth'); 
-        $this->middleware('admin')->except(['index','getCV']);  
+        $this->middleware('admin')->except(['getCV','myProfile']);  
     } 
     
     /**
@@ -25,8 +26,18 @@ class ProfilController extends Controller
      */
     public function index()
     {
-        $p = Profil::find(auth()->user()->profil_id);
-        return view('profils\my_profile', compact('p'));
+        $tab = Profil::with(['categorie'])->where('id', '!=', auth()->user()->profil_id)->get();
+
+        if($tab->isEmpty())
+        {
+            $request->session()->flash('errors', "Il n'y a aucun utilisateur sur le site.");
+            $tabCateg = Categorie::pluck('designation', 'id');
+            return view('profils/create_profils',compact('tabCateg'));
+        }
+        else
+        {
+            return view('profils/list_profils', compact('tab'));
+        }
     }
 
     /**
@@ -56,6 +67,9 @@ class ProfilController extends Controller
         'cp' => 'required|string|max:10',
         'tel' => 'required|string|regex:/(0)[0-9]{9}/|max:12',
         'listCateg' => 'required',
+        'admin' => 'required',
+        'notif' => 'required',
+        'joignable' => 'required',
         'cv' => 'mimes:pdf',
         'name' => 'required', 'string', 'max:255',
         'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
@@ -90,14 +104,20 @@ class ProfilController extends Controller
         }
 
         $p->categorie_id = $request->input('listCateg');
+        $p->isFirstCo = 1;
+        $p->isAdmin = $request->input('admin');
+        $p->isNotified = $request->input('notif');
+        $p->isContactable = $request->input('joignable');
         $p->save();
+
         $u = new User();
         $u->name=$request->input('name');
         $u->email=$request->input('email');
         $u->password=Hash::make($request->input('password'));
         $u->profil()->associate($p);
         $u->save();
-        $request->session()->flash('success', 'Profil bien créer.');
+
+        $request->session()->flash('success', 'Profil bien créé.');
         return redirect()->route('profil.create');
     }
 
@@ -120,7 +140,9 @@ class ProfilController extends Controller
      */
     public function show($id)
     {
-        //
+        $p = Profil::find($id);
+        $email = DB::table('users')->where('profil_id', $id)->value('email');
+        return view('profils/display_profils', compact('p'), compact('email'));
     }
 
     /**
@@ -131,7 +153,11 @@ class ProfilController extends Controller
      */
     public function edit($id)
     {
-        //
+        $p = Profil::find($id);
+        $tabCateg = Categorie::pluck('designation', 'id');
+        $name = DB::table('users')->where('profil_id', $id)->value('name');
+        $email = DB::table('users')->where('profil_id', $id)->value('email');
+        return view('profils/modify_profils', compact('p','tabCateg','name','email'));
     }
 
     /**
@@ -143,7 +169,63 @@ class ProfilController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+        'newNom' => 'required|string|max:20',
+        'newPrenom' => 'required|string|max:20',
+        'newVille' => 'required|string|max:25',
+        'newAdresse' => 'required|string|', 
+        'newCP' => 'required|string|max:10',
+        'newTel' => 'required|string|regex:/(0)[0-9]{9}/|max:12',
+        'newListCateg' => 'required',
+        'newNotif' => 'required',
+        'newJoignable' => 'required',
+        'newCV' => 'mimes:pdf',
+        'newName' => 'required', 'string', 'max:255',
+        'newEmail' => 'required', 'string', 'email', 'max:255', 'unique:users',
+        'newPassword' => 'required', 'string', 'min:8', 'confirmed',]);
+        
+        $p = Profil::find($id);
+        $p->nom =  $request->input('newNom');
+        $p->prenom =  $request->input('newPrenom');
+        $p->ville =  $request->input('newVille');
+        $p->adresse =  $request->input('newAdresse');
+        $p->cp =  $request->input('newCP');
+        $p->tel =  $request->input('newTel');
+
+      
+        if($request->hasFile('newCV')) {
+            //get filename with extension
+            $filenamewithextension = $request->file('newCV')->getClientOriginalName();
+      
+            //get filename without extension
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+      
+            //get file extension
+            $extension = $request->file('newCV')->getClientOriginalExtension();
+
+            //filename to store
+            $filenametostore = $filename.'_'.time().'.'.$extension;
+     
+            //Upload File
+            $request->file('newCV')->storeAs('public/cv_files', $filenametostore);
+
+            $p->CV = $filenametostore;
+        }
+
+        $p->categorie_id = $request->input('newListCateg');
+        $p->isFirstCo = 1;
+        $p->isNotified = $request->input('newNotif');
+        $p->isContactable = $request->input('newJoignable');
+        $p->save();
+
+        $u = User::find(DB::table('users')->where('profil_id', $id)->value('id'));
+        $u->name = $request->input('newName');
+        $u->email = $request->input('newEmail');
+        $u->password = Hash::make($request->input('newPassword'));
+        $u->save();
+
+        $request->session()->flash('success', 'Le profil a bien été modifié.');
+        return redirect()->route('profil.myProfile');
     }
 
     /**
@@ -152,8 +234,61 @@ class ProfilController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        $p = Profil::find($id);
+
+        $offres = Offre::all()->where('profil_id', '=', $id);
+
+        $idUser = DB::table('users')->where('profil_id', $id)->value('id');
+
+        if($offres->isNotEmpty())
+        {
+            foreach ($offres as $ligne) 
+            {
+                Offre::destroy($ligne->id);
+            }
+
+            User::destroy($idUser);
+
+            $p->delete();
+
+            $request->session()->flash('success', "L'utilisateur et ses offres ont été supprimés.");
+            return redirect()->route('profil.index');
+        }
+
+        else
+        {
+            User::destroy($idUser);
+
+            $p->delete();
+
+            $request->session()->flash('success', "L'utilisateur et ses offres ont été supprimés.");
+            return redirect()->route('profil.index');
+        }  
+    }
+
+    public function myProfile()
+    {
+        $p = Profil::find(auth()->user()->profil_id);
+        return view('profils\my_profile', compact('p'));
+    }
+
+    public function nominateAdmin($id, Request $request)
+    {
+        $p = Profil::find($id);
+        $p->isAdmin = 1;
+        $p->save();
+        $request->session()->flash('success', "L'utilisateur a été nommé administrateur.");
+        return redirect()->route('profil.index');
+    }
+
+    public function removeAdmin($id, Request $request)
+    {
+        $p = Profil::find($id);
+        $p->isAdmin = 0;
+        $p->save();
+        $request->session()->flash('success', "L'utilisateur a perdu son accès administrateur.");
+        return redirect()->route('profil.index');
     }
 }

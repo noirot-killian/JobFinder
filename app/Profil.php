@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profil extends Model
 {
+    public function offre()
+    {
+        return $this->hasMany('App\Offre');
+    }
+
     public function profil_postuler()
     {
         return $this->belongsToMany('App\Offre');

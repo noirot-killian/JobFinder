@@ -7,7 +7,7 @@
 @section('titre')
     <main class="flex-shrink-0">
         <div class="container">
-            <h1 class="mt-5">Mon <b>profil</b> </h1>
+            <h1 class="mt-5">Profil <b>utilisateur</b> </h1>
         </div>
     </main>
 @stop
@@ -33,12 +33,16 @@
                 <p class="text-secondary mb-1">{{$p->categorie->designation}}</p>
                 <p class="text-secondary mb-1">{{$p->adresse}}</p>
                 <p class="text-secondary mb-1">{{$p->ville}} ({{$p->CP}})</p>
-                <p class="text-secondary mb-1">{{Auth::user()->email}}</p>
+                <p class="text-secondary mb-1">{{$email}}</p>
                 <p class="text-secondary mb-1">{{$p->tel}}</p>
                 <br> 
-                <a href="{{route('profil.getCV',['filename'=>$p->CV])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger mon CV</b></a>
+                @if(empty($p->CV))
+                  <p> Pas de CV ajouté. </p>
+                @else
+                  <a href="{{route('profil.getCV',['filename'=>$p->CV])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger son CV</b></a>
+                @endif
                 <br>
-                <a href="{{route('profil.edit',['id'=>$p->id])}}">Modifier mes données personnelles</a>
+                <button class="btn btn-outline-primary">Envoyer un message</button>
               </div>
             </div>
           </div>

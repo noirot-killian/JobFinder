@@ -84,11 +84,10 @@
              
         @if (auth::check())
           {!! Form::open(['url'=> route('logout'), 'method' => 'post']) !!}
-            <input class="btn btn-primary" type="submit" value="Se deconnecter" />
+            <input class="btn btn-primary" type="submit" value="Se déconnecter" />
           {!! Form::close() !!}
         @else
           <a href="login" class="btn btn-primary">Se connecter</a>
-          <a href="register" class="btn btn-primary">S'enregistrer</a>
         @endif
             </li>
 

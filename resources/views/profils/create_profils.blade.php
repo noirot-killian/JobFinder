@@ -43,6 +43,15 @@
 
 {!! Form::open(['url' => route('profil.store'), 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
   @csrf
+  <div id="formCateg">
+        <label><b> Catégorie : </b></label>
+        <div>
+            {!!Form::select('listCateg', $tabCateg, null, ['class'=>'form-control']) !!}
+        </div>
+        @error('listCateg')
+            <div class="alert alert-danger"> {{ $message }} </div> 
+        @enderror
+    </div>
   <div class="form-group" id="formNom">
         <label for="nom"><b> Nom : </b></label>
         <input name="nom" value="{{old('nom')}}" type="text" class="form-control" id="nom" placeholder="Saisissez le nom du profil">
@@ -125,15 +134,7 @@
         @enderror
     </div>
     <br>
-     <div id="formCateg">
-        <label><b> Catégorie : </b></label>
-        <div>
-            {!!Form::select('listCateg', $tabCateg, null, ['class'=>'form-control']) !!}
-        </div>
-        @error('listCateg')
-            <div class="alert alert-danger"> {{ $message }} </div> 
-        @enderror
-    </div>
   <CENTER><button type="submit" class="btn btn-primary">Créer</button></CENTER>
   {!! Form::close() !!}
+  <br>
 @stop

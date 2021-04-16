@@ -35,7 +35,8 @@
                 <p class="text-secondary mb-1">{{$p->ville}} ({{$p->CP}})</p>
                 <p class="text-secondary mb-1">{{Auth::user()->email}}</p>
                 <p class="text-secondary mb-1">{{$p->tel}}</p>
-                <p class="text-secondary mb-1">{{$p->CV}}</p>
+                <br> 
+                <a href="{{route('profil.getCV',['filename'=>$p->CV])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger mon CV</b></a>
                 <br>
                 <button class="btn btn-outline-primary">Envoyer un message</button>
               </div>

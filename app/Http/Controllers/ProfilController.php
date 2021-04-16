@@ -7,6 +7,7 @@ use App\Categorie;
 use App\Profil;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Response;
 
 
 class ProfilController extends Controller
@@ -14,7 +15,7 @@ class ProfilController extends Controller
     public function __construct() 
     { 
         $this->middleware('auth'); 
-        $this->middleware('admin')->except(['index']);  
+        $this->middleware('admin')->except(['index','getCV']);  
     } 
     
     /**
@@ -55,6 +56,7 @@ class ProfilController extends Controller
         'cp' => 'required|string|max:10',
         'tel' => 'required|string|regex:/(0)[0-9]{9}/|max:12',
         'listCateg' => 'required',
+        'cv' => 'mimes:pdf',
         'name' => 'required', 'string', 'max:255',
         'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
         'password' => 'required', 'string', 'min:8', 'confirmed',]);
@@ -98,6 +100,18 @@ class ProfilController extends Controller
         $request->session()->flash('success', 'Profil bien créer.');
         return redirect()->route('profil.create');
     }
+
+    public function getCV($filename)
+    {
+        $file = storage_path()."\app\public\cv_files\/".$filename;
+
+        $headers = array(
+        'Content-Type: application/pdf',
+        );
+    
+        return Response::download($file, "CV_postulant", $headers);
+    }
+
     /**
      * Display the specified resource.
      *

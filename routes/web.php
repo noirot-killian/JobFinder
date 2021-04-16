@@ -52,6 +52,9 @@ Route::post('/offre/addPostulation/{idOffre}/{idProfil}', 'OffreController@addPo
 Route::post('/offre/removePostulation/{idOffre}/{idProfil}', 'OffreController@removePostulation')->name('offre.removePostulation');
 
 Route::resource('message', 'MessageController');
+
+Route::get('/profil/download/{filename}', 'ProfilController@getCV')->name('profil.getCV');
+
 Route::resource('profil', 'ProfilController');
 Route::resource('categorie', 'CategorieController');
 Route::get('/home', 'HomeController@index')->name('home');

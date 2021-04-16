@@ -14,11 +14,11 @@
         margin-top: 50px;
         margin-left: 500px;
         font-size: 40px;
-        font-family: serif;
     }
-    #formConection
+    #formConection2
     {
-         font-weight:20px;
+        font-weight:20px;
+        font-family: system-ui;
     }
   
 
@@ -31,7 +31,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                         Bonjour {{auth::user()->profil->prenom}} {{ __('vous êtes connecté !') }}
+                         <h1>Bonjour {{auth::user()->profil->prenom}}, {{ __('vous êtes connecté !') }}</h1>
         </div>
     </div>
 </div>

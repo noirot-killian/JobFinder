@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Profil;
 
 class IsAdmin
 {
@@ -14,11 +15,13 @@ class IsAdmin
      * @return mixed
      */
    public function handle($request, Closure $next)
-    {
-        if(auth()->user()->is_Admin == 1)
+   {
+        $p = Profil::find(auth()->user()->profil_id);
+
+        if($p->isAdmin == 1)
         {
-        return $next($request);
+            return $next($request);
         }
-        return redirect('/JobFinder')->with('error','Il faut etre admin.');
+        return redirect('/home')->with('errors','Désolé, il faut être administrateur pour pouvoir accéder à cette page.');
     }
 }

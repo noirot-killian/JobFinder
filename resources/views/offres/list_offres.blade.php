@@ -24,7 +24,6 @@
 	      <th scope="col">Ville</th>
 	      <th scope="col">Favoris</th>
 	      <th scope="col">Détails</th>
-	      <th scope="col">Modifier</th>
 	    </tr>
 	</thead>
 	<tbody>
@@ -44,7 +43,6 @@
 		        @endif
 		        </td>
 		        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>
-		        <td> <a href="{{route('offre.edit',['id'=>$ligne->id])}}" class="btn btn-secondary">Modifier</a> </td>
 		    </tr>	
   		@endforeach
   	</tbody>

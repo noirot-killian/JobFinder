@@ -13,8 +13,6 @@
 @stop
 @section('content')
 {!! NoCaptcha::renderJs() !!}
-<form action="{{route('profil.store')}}" method="post"> 
-    @csrf
   <style>
     
     #formNom, #formPDF,#formPrenom,#formTel,#formVille,#formAdresse,#formMdp,#formConfirmMdp,#formPseudo,#formEmail,#formCp,#formCaptcha,#formCateg
@@ -120,12 +118,13 @@
     </div>
     <br>
     <div class="form-group" id="formPDF">
-        <label for="InputFile"><b> PDF : </b></label>
-        <input type="file" name="pdf" id="InputFile">
-        @error('pdf')
+        <label for="InputFile"><b> CV : </b></label>
+        <input type="file" name="cv" id="InputFile">
+        @error('cv')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
+    <br>
      <div id="formCateg">
         <label><b> Catégorie : </b></label>
         <div>
@@ -135,20 +134,6 @@
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
-    <br>
-       <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}" id="formCaptcha">
-            <label class="col-md-4 control-label"></label>
-                <div class="col-md-6">
-                    {!! app('captcha')->display() !!}
-                        @if ($errors->has('g-recaptcha-response'))
-                            <span class="help-block">
-                                  <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                            </span>
-                        @endif
-                </div>
-      </div>
-   <br>
   <CENTER><button type="submit" class="btn btn-primary">Créer</button></CENTER>
   {!! Form::close() !!}
-</form>
 @stop

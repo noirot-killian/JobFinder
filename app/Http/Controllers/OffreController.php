@@ -10,6 +10,12 @@ use App\Type;
 
 class OffreController extends Controller
 {
+    public function __construct() 
+    { 
+        $this->middleware('auth'); 
+        $this->middleware('admin')->only(['listAdmin','listValidationAdmin','validation','archiving','edit','update','destroy']);  
+    } 
+
     /**
      * Display a listing of the resource.
      *
@@ -18,16 +24,63 @@ class OffreController extends Controller
     public function index()
     {
         // eager loading
-        $tab = Offre::with(['type','categorie','profil_favoriser'])->get(); 
+        $tab = Offre::with(['type','categorie','profil_favoriser'])->where('isValid', '=', 1)->where('isArchived', '=', 0)->get(); 
         // $tab = Offre::all(); -> lazy loading
-        return view('offres/list_offres', compact('tab'));
+
+        if($tab->isEmpty())
+        {
+            $request->session()->flash('errors', "Il n'y a aucune offre sur le site.");
+            return view('create_offres');
+        }
+        else
+        {
+            return view('offres/list_offres', compact('tab'));
+        }
     }
 
-    public function __construct() 
-    { 
-        $this->middleware('auth'); 
-        $this->middleware('is_admin')->only(['']);  
-    } 
+    public function listAdmin(Request $request)
+    {
+        $tab = Offre::with(['type','categorie','profil_favoriser'])->where('isValid', '=', 1)->where('isArchived', '=', 0)->get();
+        
+        if($tab->isEmpty())
+        {
+            $request->session()->flash('errors', "Il n'y a aucune offre sur le site.");
+            $tabCateg = Categorie::pluck('designation', 'id');
+            $tabType = Type::pluck('nom', 'id');
+            return view('offres/create_offres_admin',compact('tabCateg'),compact('tabType'));
+        }
+        else
+        {
+            return view('offres/list_offres_admin', compact('tab'));
+        }
+    }
+
+    public function listValidationAdmin(Request $request)
+    {
+        $tab = Offre::with(['type','categorie','profil_favoriser'])->where('isValid', '=', 0)->get();
+
+        if($tab->isEmpty())
+        {
+            $request->session()->flash('errors', "Il n'y a aucune offre à valider.");
+            $tab = Offre::with(['type','categorie','profil_favoriser'])->where('isValid', '=', 1)->where('isArchived', '=', 0)->get();
+
+            if($tab->isEmpty())
+            {
+                $request->session()->flash('errors', "Il n'y a aucune offre sur le site et aucune offre à valider.");
+                $tabCateg = Categorie::pluck('designation', 'id');
+                $tabType = Type::pluck('nom', 'id');
+                return view('offres/create_offres_admin',compact('tabCateg'),compact('tabType'));
+            }
+            else
+            {
+                return view('offres/list_offres_admin', compact('tab'));
+            }
+        }
+        else
+        {
+            return view('offres/list_offres_validate', compact('tab'));
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -97,7 +150,7 @@ class OffreController extends Controller
         $o->type_id = $request->input('listType');
         $o->profil_id = auth()->user()->profil_id ;
         $o->save();
-        $request->session()->flash('success', 'L offre a bien été ajoutée. Elle doit maintenant être validée par l admin avant d être partagée.');
+        $request->session()->flash('success', "L'offre a bien été ajoutée. Elle doit maintenant être validée par l'admin avant d'être partagée.");
         return redirect()->route('offre.create');
     }
 
@@ -193,9 +246,12 @@ class OffreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        $o = Offre::find($id);
+        $o->delete();
+        $request->session()->flash('success', "L'offre a été supprimée.");
+        return redirect()->route('offre.listAdmin');
     }
 
     public function addFavorite($idOffre, $idProfil)
@@ -295,5 +351,90 @@ class OffreController extends Controller
         {
             return view('offres/my_offers', compact('tabOffers'));
         }
+    }
+
+    public function validation($id, Request $request)
+    {
+        $o = Offre::find($id);
+        $o->isValid = 1;
+        $o->save();
+        $request->session()->flash('success', "L'offre a été validée.");
+        return redirect()->route('offre.listValidation');
+    }
+
+    public function archiving($id, Request $request)
+    {
+        $o = Offre::find($id);
+        $o->isArchived = 1;
+        $o->save();
+        $request->session()->flash('success', "L'offre a été archivée.");
+        return redirect()->route('offre.listAdmin');
+    }
+
+    public function createAdmin()
+    {
+        $tabCateg = Categorie::pluck('designation', 'id');
+        $tabType = Type::pluck('nom', 'id');
+        return view('offres/create_offres_admin',compact('tabCateg'),compact('tabType'));
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $validatedData = $request->validate([
+        'intitule' => 'required|string|max:50',
+        'description' => 'required|string|max:255',
+        'duree' => 'nullable|string|max:25',
+        'dateDebut' => 'after:today', /*la date doit être future à la date du jour*/
+        'dateFin' => 'nullable|after:today',
+        'ville' => 'required|string|regex:/^[a-zA-Z ]+$/', /*chaîne sans chiffres*/
+        'entreprise' => 'required|string',
+        'contact2' => 'nullable|regex:/(0)[0-9]{9}/|max:12', /*numéro de téléphone correct*/
+        'pdf' => 'mimes:pdf', // le doc doit être un PDF
+        'listCateg' => 'required',
+        'listType' => 'required',
+        ]);
+
+        $o=new Offre;
+        $o->intitule =  $request->input('intitule');
+        $o->description =  $request->input('description');
+        $o->duree =  $request->input('duree');
+        $o->date_debut = $request->input('dateDebut');
+        $o->date_fin = $request->input('dateFin');
+        $o->entreprise = $request->input('entreprise');
+        $o->ville = $request->input('ville');
+        $o->email = $request->input('contact1');
+        $o->tel = $request->input('contact2');
+        if($request->hasFile('pdf')) {
+            //get filename with extension
+            $filenamewithextension = $request->file('pdf')->getClientOriginalName();
+      
+            //get filename without extension
+            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+      
+            //get file extension
+            $extension = $request->file('pdf')->getClientOriginalExtension();
+      
+            //filename to store
+            $filenametostore = $filename.'_'.time().'.'.$extension;
+     
+            //Upload File
+            $request->file('pdf')->storeAs('public/pdf_files', $filenametostore);
+
+            $o->PDF = $filenametostore;
+        }
+        $o->isValid = 1;
+        $o->isArchived = 0;
+        $o->categorie_id = $request->input('listCateg');
+        $o->type_id = $request->input('listType');
+        $o->profil_id = auth()->user()->profil_id ;
+        $o->save();
+        $request->session()->flash('success', "L'offre a bien été ajoutée.");
+        return redirect()->route('offre.createAdmin');
+    }
+
+    public function showAdmin($id)
+    {
+        $o = Offre::find($id);
+        return view('offres/display_offres_admin', compact('o'));
     }
 }

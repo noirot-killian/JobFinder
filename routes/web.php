@@ -23,10 +23,25 @@ Route::get('/offre/my-postulations', 'OffreController@myPostulations')->name('of
 
 Route::get('/offre/my-offers', 'OffreController@myOffers')->name('offre.indexOffers');
 
+Route::get('/offre/list', 'OffreController@listAdmin')->name('offre.listAdmin');
+
+Route::get('/offre/listValidation', 'OffreController@listValidationAdmin')->name('offre.listValidation');
+
+Route::get('/offre/validate/{id}', 'OffreController@validation')->name('offre.validate');
+
+Route::get('/offre/archive/{id}', 'OffreController@archiving')->name('offre.archive');
+
+Route::get('/offre/createAdmin', 'OffreController@createAdmin')->name('offre.createAdmin');
+
+Route::post('/offre/storeAdmin', 'OffreController@storeAdmin')->name('offre.storeAdmin');
+
+Route::get('/offre/showAdmin/{id}', 'OffreController@showAdmin')->name('offre.showAdmin');
+
 Route::resource('offre', 'OffreController');
 Route::get('/offre/show/{id}', 'OffreController@show')->name('offre.show');
 Route::get('/offre/edit/{id}', 'OffreController@edit')->name('offre.edit');
 Route::put('/offre/update/{id}', 'OffreController@update')->name('offre.update');
+Route::delete('/offre/delete/{id}', 'OffreController@destroy')->name('offre.destroy');
 
 Route::post('/offre/addFavorite/{idOffre}/{idProfil}', 'OffreController@addFavorite')->name('offre.addFavorite');
 

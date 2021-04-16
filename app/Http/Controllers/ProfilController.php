@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfilController extends Controller
 {
+    public function __construct() 
+    { 
+        $this->middleware('auth'); 
+        $this->middleware('admin')->except(['index']);  
+    } 
+    
     /**
      * Display a listing of the resource.
      *
@@ -18,14 +24,9 @@ class ProfilController extends Controller
      */
     public function index()
     {
-        //
+        $p = Profil::find(auth()->user()->profil_id);
+        return view('profils\my_profile', compact('p'));
     }
-
-    public function __construct() 
-    { 
-         $this->middleware('auth'); 
-         $this->middleware('is_admin')->only(['']);  
-    } 
 
     /**
      * Show the form for creating a new resource.
@@ -47,7 +48,6 @@ class ProfilController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-        'g-recaptcha-response' => 'required|captcha',
         'nom' => 'required|string|max:20',
         'prenom' => 'required|string|max:20',
         'ville' => 'required|string|max:25',
@@ -58,6 +58,7 @@ class ProfilController extends Controller
         'name' => 'required', 'string', 'max:255',
         'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
         'password' => 'required', 'string', 'min:8', 'confirmed',]);
+        
         $p=new Profil;
         $p->nom =  $request->input('nom');
         $p->prenom =  $request->input('prenom');
@@ -65,25 +66,28 @@ class ProfilController extends Controller
         $p->adresse =  $request->input('adresse');
         $p->cp =  $request->input('cp');
         $p->tel =  $request->input('tel');
-        $p->CV = $request->input('pdf');
-        $p->categorie_id = $request->input('listCateg');
-        /*if($request->hasFile('pdf')) {
+
+      
+        if($request->hasFile('cv')) {
             //get filename with extension
-            $filenamewithextension = $request->file('pdf')->getClientOriginalName();
+            $filenamewithextension = $request->file('cv')->getClientOriginalName();
       
             //get filename without extension
             $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
       
             //get file extension
-            $extension = $request->file('pdf')->getClientOriginalExtension();
-      
+            $extension = $request->file('cv')->getClientOriginalExtension();
+
             //filename to store
             $filenametostore = $filename.'_'.time().'.'.$extension;
      
             //Upload File
-            $request->file('pdf')->storeAs('public/pdf_files', $filenametostore);
+            $request->file('cv')->storeAs('public/cv_files', $filenametostore);
+
             $p->CV = $filenametostore;
-        }*/
+        }
+
+        $p->categorie_id = $request->input('listCateg');
         $p->save();
         $u = new User();
         $u->name=$request->input('name');

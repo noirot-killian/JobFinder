@@ -37,33 +37,50 @@
     <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">JobFinder</a>
+          <a class="navbar-brand" href="/JobFinder/public/">JobFinder</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <li class="nav-item active">
-                <a class="nav-link {{request()->routeis('offre.index') ? 'active' : '' }}" aria-current="page" href="{{route('offre.index')}}">Offres</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Ajouter</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link {{request()->routeis('profil.create') ? 'active' : '' }}" aria-current="page" href="{{route('profil.create')}}">Créer un profil</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link {{request()->routeis('offre.indexOffers') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexOffers')}}">Mes offres</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link {{request()->routeis('offre.indexPostulations') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexPostulations')}}">Mes postulations</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link {{request()->routeis('offre.indexFavorites') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexFavorites')}}">Mes favoris</a>
-              </li>
+              @if(auth::check() && auth::user()->profil->isAdmin == 0)
+                <li class="nav-item active">
+                  <a class="nav-link {{request()->routeis('offre.index') ? 'active' : '' }}" aria-current="page" href="{{route('offre.index')}}">Offres</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link {{request()->routeis('offre.create') ? 'active' : '' }}" aria-current="page" href="{{route('offre.create')}}">Ajouter</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link {{request()->routeis('offre.indexOffers') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexOffers')}}">Mes offres</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link {{request()->routeis('offre.indexPostulations') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexPostulations')}}">Mes postulations</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link {{request()->routeis('offre.indexFavorites') ? 'active' : '' }}" aria-current="page" href="{{route('offre.indexFavorites')}}">Mes favoris</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link {{request()->routeis('profil.index') ? 'active' : '' }}" aria-current="page" href="{{route('profil.index')}}">Mon profil</a>
+                </li>
+              @else
+                @if(auth::check() && auth::user()->profil->isAdmin == 1)
+                  <li class="nav-item active">
+                    <a class="nav-link {{request()->routeis('offre.listAdmin') ? 'active' : '' }}" aria-current="page" href="{{route('offre.listAdmin')}}">Offres</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link {{request()->routeis('offre.listValidation') ? 'active' : '' }}" aria-current="page" href="{{route('offre.listValidation')}}">À valider</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link {{request()->routeis('offre.createAdmin') ? 'active' : '' }}" aria-current="page" href="{{route('offre.createAdmin')}}">Ajouter</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link {{request()->routeis('profil.create') ? 'active' : '' }}" aria-current="page" href="{{route('profil.create')}}">Créer un profil</a>
+                  </li>
+                @else
+                  <li class="nav-item active"></li>
+                @endif
+              @endif
             </ul>
-
-            <li class="nav-item">
              
         @if (auth::check())
           {!! Form::open(['url'=> route('logout'), 'method' => 'post']) !!}

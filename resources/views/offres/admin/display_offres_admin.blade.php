@@ -27,7 +27,7 @@
             @if(empty($o->PDF))
                 <p> Pas de PDF associé. </p>
             @else
-                <a href="{{route('profil.getPDF',['filename'=>$o->PDF])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger le PDF</b></a>
+                <a href="{{route('profil.getPDF',['filename'=>$o->PDF])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none; margin-right: 700px; margin-left: 700px;"><b>Télécharger le PDF</b></a>
             @endif
             <br>
 

@@ -27,38 +27,40 @@
             @if(empty($o->PDF))
                 <p> Pas de PDF associé. </p>
             @else
-                <a href="{{route('profil.getPDF',['filename'=>$o->PDF])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger le PDF</b></a>
+                <a href="{{route('profil.getPDF',['filename'=>$o->PDF])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none; margin-right: 700px; margin-left: 700px;"><b>Télécharger le PDF</b></a>
             @endif
             <br>
+            @if($o->profil_id != Auth::user()->profil_id)
 
-            @if($o->profil_postuler()->find(Auth::user()->profil_id))
+                @if($o->profil_postuler()->find(Auth::user()->profil_id))
 
-                <a href="#" id="btnDelPostu" class="btn btn-danger">Annuler la postulation</a>
+                    <a href="#" id="btnDelPostu" class="btn btn-danger">Annuler la postulation</a>
 
-                <a href="#" id="btnAddPostu" style="display: none;" class="btn btn-primary">Postuler</a>
+                    <a href="#" id="btnAddPostu" style="display: none;" class="btn btn-primary">Postuler</a>
 
-            @else
+                @else
 
-                <a href="#" id="btnAddPostu" class="btn btn-primary">Postuler</a>
+                    <a href="#" id="btnAddPostu" class="btn btn-primary">Postuler</a>
 
-                <a href="#" id="btnDelPostu" style="display: none;" class="btn btn-danger">Annuler la postulation</a>
+                    <a href="#" id="btnDelPostu" style="display: none;" class="btn btn-danger">Annuler la postulation</a>
+
+                @endif
+
+                @if($o->profil_favoriser()->find(Auth::user()->profil_id))
+
+                    <a href="#" id="btnDelFav" class="btn btn-danger">Retirer des favoris</a>
+
+                    <a href="#" id="btnAddFav" style="display: none;" class="btn btn-primary">Mettre en favoris</a>
+
+                @else
+
+                    <a href="#" id="btnAddFav" class="btn btn-primary">Mettre en favoris</a>
+
+                    <a href="#" id="btnDelFav" style="display: none;" class="btn btn-danger">Retirer des favoris</a>
+
+                @endif
 
             @endif
-
-            @if($o->profil_favoriser()->find(Auth::user()->profil_id))
-
-                <a href="#" id="btnDelFav" class="btn btn-danger">Retirer des favoris</a>
-
-                <a href="#" id="btnAddFav" style="display: none;" class="btn btn-primary">Mettre en favoris</a>
-
-            @else
-
-                <a href="#" id="btnAddFav" class="btn btn-primary">Mettre en favoris</a>
-
-                <a href="#" id="btnDelFav" style="display: none;" class="btn btn-danger">Retirer des favoris</a>
-
-            @endif
-            
             <!-- <a href="{{route('offre.index')}}" class="btn btn-primary">Retour</a> -->
         </div>
 	</div>

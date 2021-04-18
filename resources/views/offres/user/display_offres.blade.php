@@ -64,14 +64,62 @@
             <!-- <a href="{{route('offre.index')}}" class="btn btn-primary">Retour</a> -->
         </div>
 	</div>
+
+    <!-- Modal de confirmation de postulation -->
+    <div class="modal" tabindex="-1" role="dialog" id="modalPostulation" style="display:none">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de postulation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir postuler à cette offre ? L'offreur pourra accéder à votre profil et vous contacter.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary btnConfPostu">Postuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation d'annulation de postulation -->
+    <div class="modal" tabindex="-1" role="dialog" id="modalAnnulationPostulation" style="display:none">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation d'annulation de postulation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir annuler votre postulation à cette offre ? L'offreur ne pourra plus accéder à votre profil et vous contacter.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-danger btnConfAnnulPostu">Annuler la postulation</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 @section('script')
   $(document).ready(function() 
   {
-    /* Au clic du bouton "Postuler" */
+    //Affichage de la modal au clic du bouton "Postuler"
+    $(document).on('click',"#btnAddPostu",function(){
+        $("#modalPostulation").show();
+    });
 
-    $("#btnAddPostu").click(function(e)
+    /* Au clic du bouton de confirmation "Postuler" */
+    $(".btnConfPostu").click(function(e)
     {
+        $("#modalPostulation").hide(); /* On cache la modal */
+
         //appel de notre API
         $.ajax({
 
@@ -83,16 +131,24 @@
 
             success:function(data)
             {
+
                 $("#btnAddPostu").hide();
                 $("#btnDelPostu").show();
             }
         });
+
     });
 
-    /* Au clic du bouton "Annuler la postulation" */
+    //Affichage de la modal au clic du bouton "Annuler la postulation"
+    $(document).on('click',"#btnDelPostu",function(){
+        $("#modalAnnulationPostulation").show();
+    });
 
-    $("#btnDelPostu").click(function(e)
+    /* Au clic du bouton de confirmation "Annuler la postulation" */
+    $(".btnConfAnnulPostu").click(function(e)
     {
+        $("#modalAnnulationPostulation").hide(); /* On cache la modal */
+
         //appel de notre API
         $.ajax({
 
@@ -110,6 +166,18 @@
         });
     });
 
+    //Cachement des modal au clic de la croix
+    $(document).on('click',".close",function(){
+        $("#modalPostulation").hide();
+        $("#modalAnnulationPostulation").hide();
+    });
+
+    //Cachement des modal au clic du bouton "Annuler"
+    $(document).on('click',".btnAnnuler",function(){
+        $("#modalPostulation").hide();
+        $("#modalAnnulationPostulation").hide();
+    });
+    
     /* Au clic du bouton "Mettre en favoris" */
 
     $("#btnAddFav").click(function(e)

@@ -41,7 +41,29 @@
   		@endforeach
   	</tbody>
 </table>
+
+<!-- Modal de confirmation d'annulation de postulation -->
+<div class="modal" tabindex="-1" role="dialog" id="modalAnnulationPostulation" style="display:none">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation d'annulation de postulation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir annuler votre postulation à cette offre ? L'offreur ne pourra plus accéder à votre profil et vous contacter.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-danger btnConfAnnulPostu">Annuler la postulation</button>
+            </div>
+        </div>
+    </div>
+</div>
 @stop
+
 @section('script')
   $(document).ready(function() 
   {
@@ -53,9 +75,23 @@
     	}
 	});
 
-    /* Au clic de la croix, on retire la postulation à l'offre */
+	//Affichage de la modal au clic de la croix
+    $(document).on('click',".fa-times",function(){
+        $("#modalAnnulationPostulation").show();
+    });
 
-    $(".fa-times").click(function(e)
+    //Cachement des modal au clic de la croix
+    $(document).on('click',".close",function(){
+        $("#modalAnnulationPostulation").hide();
+    });
+
+    //Cachement des modal au clic du bouton "Annuler"
+    $(document).on('click',".btnAnnuler",function(){
+        $("#modalAnnulationPostulation").hide();
+    });
+
+    /* Au clic du bouton de confirmation "Annuler la postulation" */
+    $(".btnConfAnnulPostu").click(function(e)
     {
     	var event = $(this);
     	
@@ -65,13 +101,14 @@
 
 			type:"POST",
 		             
-			url:"http://localhost/JobFinder/public/offre/removePostulation/"+$(this).attr("id")+"/"+{{Auth::user()->profil_id}},
+			url:"http://localhost/JobFinder/public/offre/removePostulation/"+{{$ligne->id}}+"/"+{{Auth::user()->profil_id}},
 
 			data:{ _token: '{{csrf_token()}}'},
 
 			success:function(data)
 			{
-				event.parent().parent().addClass("ligne-rouge").delay("1").fadeOut(); //suppression de la ligne visuelle
+				$("#modalAnnulationPostulation").hide();
+				$(".tr").addClass("ligne-rouge").delay("1").fadeOut(); //suppression de la ligne visuelle
 			}
 		});
     });

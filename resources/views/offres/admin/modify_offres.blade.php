@@ -33,7 +33,7 @@
         margin-right: 1040px;
     }
 
-    #btnModifier, #btnAnnuler
+    .btnModif, #btnAnnuler
     {
         width: 200px;
     }
@@ -149,9 +149,50 @@
         <label id="SavedFile" name="pdfSaved"><i>Fichier actuel :</i> {{$uneOffre->PDF}}</label>
     </div>
     <br>
-    <CENTER><button type="submit" class="btn btn-primary" id="btnModifier">Modifier</button></CENTER>      
+    <CENTER><button type="button" class="btn btn-primary btnModif" id="'+key+'">Modifier</button></CENTER>
+
+    <!-- Modal de confirmation de modification -->
+    <div class="modal" tabindex="-1" role="dialog" id="modalModification" style="display:none">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de modification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir modifier cette offre ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary btnConfModif">Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>      
 {!! Form::close() !!}
 <br>
 <CENTER><a href="{{route('offre.index')}}" class="btn btn-secondary" id="btnAnnuler">Annuler</a></CENTER>
 <br><br>
+@stop
+@section('script')
+    $(document).ready(function() 
+    {
+
+        //Affichage de la modal au clic du bouton "Modifier"
+        $(document).on('click',".btnModif",function(){
+            $("#modalModification").show();
+        });
+
+        //Cachement des modal au clic de la croix
+        $(document).on('click',".close",function(){
+            $("#modalModification").hide();
+        });
+
+        //Cachement des modal au clic du bouton "Annuler"
+        $(document).on('click',".btnAnnuler",function(){
+            $("#modalModification").hide();
+        });
+    });
 @stop

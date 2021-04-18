@@ -16,7 +16,7 @@ class ProfilController extends Controller
     public function __construct() 
     { 
         $this->middleware('auth'); 
-        $this->middleware('admin')->except(['show','getCV','myProfile','listApplicants']);  
+        $this->middleware('admin')->except(['edit','update','show','getCV','myProfile','listApplicants']);  
     } 
     
     /**
@@ -157,7 +157,7 @@ class ProfilController extends Controller
         $tabCateg = Categorie::pluck('designation', 'id');
         $name = DB::table('users')->where('profil_id', $id)->value('name');
         $email = DB::table('users')->where('profil_id', $id)->value('email');
-        return view('profils/admin/modify_profils', compact('p','tabCateg','name','email'));
+        return view('profils/user/modify_profils', compact('p','tabCateg','name','email'));
     }
 
     /**

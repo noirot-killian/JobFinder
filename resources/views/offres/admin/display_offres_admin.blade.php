@@ -33,13 +33,13 @@
 
             @if($o->isValid == 0)
 
-                <a href="{{route('offre.validate',['id'=>$o->id])}}" class="btn btn-primary btnValid">Valider</a>
+                <button type="button" class="btn btn-primary btnValid" id="'+key+'">Valider</button>
 
             @else
 
                 @if($o->isValid == 1 && $o->isArchived == 0)
 
-                    <a href="{{route('offre.archive',['id'=>$o->id])}}" class="btn btn-danger btnArchiv">Archiver</a>
+                    <button type="button" class="btn btn-danger btnArchiv" id="'+key+'">Archiver</button>
 
                 @else
 
@@ -50,23 +50,83 @@
             @endif 
         </div>
 	</div>
+    <!-- Modal de confirmation de validation -->
+    <div class="modal" tabindex="-1" role="dialog" id="modalValidation" style="display:none">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de validation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir valider cette offre ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <a href="{{route('offre.validate',['id'=>$o->id])}}" class="btn btn-primary btnConfValid">Valider</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de confirmation d'archivage -->
+    <div class="modal" tabindex="-1" role="dialog" id="modalArchivage" style="display:none">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation d'archivage</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir archiver cette offre ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <a href="{{route('offre.archive',['id'=>$o->id])}}" class="btn btn-danger btnConfArchiv">Archiver</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 @section('script')
   $(document).ready(function() 
   {
 
-    /* Au clic du bouton "Valider" */
-
-    $(".btnValid").click(function(e)
-    {
-        $(this).hide();
+    //Affichage de la modal au clic du bouton "Valider"
+    $(document).on('click',".btnValid",function(){
+        $("#modalValidation").show();
     });
 
-    /* Au clic du bouton "Archiver" */
+    //Affichage de la modal au clic du bouton "Archiver"
+    $(document).on('click',".btnArchiv",function(){
+        $("#modalArchivage").show();
+    });
 
-    $(".btnArchiv").click(function(e)
+    //Cachement de la modal au clic de la croix
+    $(document).on('click',".close",function(){
+        $("#modalValidation").hide();
+        $("#modalArchivage").hide();
+    });
+
+    //Cachement de la modal au clic du bouton "Annuler"
+    $(document).on('click',".btnAnnuler",function(){
+        $("#modalValidation").hide();
+        $("#modalArchivage").hide();
+    });
+
+    /* Au clic du bouton de confirmation "Valider" */
+    $(".btnConfValid").click(function(e)
     {
-        $(this).hide();
+        $(".btnValid").hide();
+    });
+
+    /* Au clic du bouton de confirmation "Archiver" */
+    $(".btnConfArchiv").click(function(e)
+    {
+        $(".btnArchiv").hide();
     });
 
   });

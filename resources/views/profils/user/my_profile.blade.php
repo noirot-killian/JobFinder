@@ -37,8 +37,8 @@
                 <p class="text-secondary mb-1">{{$p->tel}}</p>
                 <br> 
                 <a href="{{route('profil.getCV',['filename'=>$p->CV])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger mon CV</b></a>
-                <br>
-                <a href="{{route('profil.edit',['id'=>$p->id])}}">Modifier mes données personnelles</a>
+                <a href="{{route('profil.edit',['id'=>$p->id])}}" class="btnSupp" style="background-color: #00B2CD; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Modifier mes données personnelles</b></a>
+                <a href="#" class="btnSupp" style="background-color: #F10D0D; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Supprimer mon compte</b></a>
               </div>
             </div>
           </div>
@@ -75,4 +75,47 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal" tabindex="-1" role="dialog" id="modalSuppression" style="display:none">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmation de suppression</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Êtes-vous sûr de vouloir supprimer votre compte ? Vos offres, vos candidatures et vos favoris seront supprimés et vous ne pourrez plus accéder au site.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
+            {!! Form::open(['url'=> route('profil.destroy',['id'=>$p->id]), 'method' => 'delete']) !!}
+                <input class="btn btn-danger" type="submit" value="Supprimer" />
+            {!! Form::close() !!}
+          </div>
+      </div>
+    </div>
+</div>
+@stop
+
+@section('script')
+  $(document).ready(function() 
+  {
+    //Affichage de la modal au clic du bouton "Supprimer mon compte"
+      $(document).on('click',".btnSupp",function(){
+          $("#modalSuppression").show();
+      });
+
+      //Cachement des modal au clic de la croix
+      $(document).on('click',".close",function(){
+          $("#modalSuppression").hide();
+      });
+
+      //Cachement des modal au clic du bouton "Annuler"
+      $(document).on('click',".btnAnnuler",function(){
+          $("#modalSuppression").hide();
+      });
+  });
 @stop

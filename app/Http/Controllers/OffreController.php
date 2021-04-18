@@ -33,11 +33,11 @@ class OffreController extends Controller
             $request->session()->flash('errors', "Il n'y a aucune offre sur le site.");
             $tabCateg = Categorie::pluck('designation', 'id');
             $tabType = Type::pluck('nom', 'id');
-            return view('offres/create_offres',compact('tabCateg'),compact('tabType'));
+            return view('offres/user/create_offres',compact('tabCateg'),compact('tabType'));
         }
         else
         {
-            return view('offres/list_offres', compact('tab'));
+            return view('offres/user/list_offres', compact('tab'));
         }
     }
 
@@ -50,11 +50,11 @@ class OffreController extends Controller
             $request->session()->flash('errors', "Il n'y a aucune offre sur le site.");
             $tabCateg = Categorie::pluck('designation', 'id');
             $tabType = Type::pluck('nom', 'id');
-            return view('offres/create_offres_admin',compact('tabCateg'),compact('tabType'));
+            return view('offres/admin/create_offres_admin',compact('tabCateg'),compact('tabType'));
         }
         else
         {
-            return view('offres/list_offres_admin', compact('tab'));
+            return view('offres/admin/list_offres_admin', compact('tab'));
         }
     }
 
@@ -72,16 +72,16 @@ class OffreController extends Controller
                 $request->session()->flash('errors', "Il n'y a aucune offre sur le site et aucune offre à valider.");
                 $tabCateg = Categorie::pluck('designation', 'id');
                 $tabType = Type::pluck('nom', 'id');
-                return view('offres/create_offres_admin',compact('tabCateg'),compact('tabType'));
+                return view('offres/admin/create_offres_admin',compact('tabCateg'),compact('tabType'));
             }
             else
             {
-                return view('offres/list_offres_admin', compact('tab'));
+                return view('offres/admin/list_offres_admin', compact('tab'));
             }
         }
         else
         {
-            return view('offres/list_offres_validate', compact('tab'));
+            return view('offres/admin/list_offres_validate', compact('tab'));
         }
     }
 
@@ -94,7 +94,7 @@ class OffreController extends Controller
     {
         $tabCateg = Categorie::pluck('designation', 'id');
         $tabType = Type::pluck('nom', 'id');
-        return view('offres/create_offres',compact('tabCateg'),compact('tabType'));
+        return view('offres/user/create_offres',compact('tabCateg'),compact('tabType'));
     }
 
     /**
@@ -166,7 +166,7 @@ class OffreController extends Controller
     public function show($id)
     {
         $o = Offre::find($id);
-        return view('offres/display_offres', compact('o'));
+        return view('offres/user/display_offres', compact('o'));
     }
 
     /**
@@ -180,7 +180,7 @@ class OffreController extends Controller
         $uneOffre = Offre::find($id);
         $lesCategories = Categorie::pluck('designation', 'id');
         $lesTypes = Type::pluck('nom', 'id');
-        return view('offres/modify_offres',compact('uneOffre','lesCategories','lesTypes'));
+        return view('offres/admin/modify_offres',compact('uneOffre','lesCategories','lesTypes'));
     }
 
     /**
@@ -286,11 +286,11 @@ class OffreController extends Controller
         if(empty($tabFav))
         {
             $request->session()->flash('errors', "Vous n'avez pas d'offres mises en favoris.");
-            return view('offres/list_offres', compact('tab'));
+            return view('offres/user/list_offres', compact('tab'));
         }
         else
         {
-            return view('offres/my_favorites', compact('tabFav'));
+            return view('offres/user/my_favorites', compact('tabFav'));
         }
     }
 
@@ -323,11 +323,11 @@ class OffreController extends Controller
         if(empty($tabPostu))
         {
             $request->session()->flash('errors', "Vous n'avez postuler à aucune offre.");
-            return view('offres/list_offres', compact('tab'));
+            return view('offres/user/list_offres', compact('tab'));
         }
         else
         {
-            return view('offres/my_postulations', compact('tabPostu'));
+            return view('offres/user/my_postulations', compact('tabPostu'));
         }
     }
 
@@ -348,11 +348,11 @@ class OffreController extends Controller
             $request->session()->flash('errors', "Vous n'avez proposé aucune offre.");
             $tabCateg = Categorie::pluck('designation', 'id');
             $tabType = Type::pluck('nom', 'id');
-            return view('offres/create_offres',compact('tabCateg'),compact('tabType'));
+            return view('offres/user/create_offres',compact('tabCateg'),compact('tabType'));
         }
         else
         {
-            return view('offres/my_offers', compact('tabOffers'));
+            return view('offres/user/my_offers', compact('tabOffers'));
         }
     }
 
@@ -389,7 +389,7 @@ class OffreController extends Controller
     {
         $tabCateg = Categorie::pluck('designation', 'id');
         $tabType = Type::pluck('nom', 'id');
-        return view('offres/create_offres_admin',compact('tabCateg'),compact('tabType'));
+        return view('offres/admin/create_offres_admin',compact('tabCateg'),compact('tabType'));
     }
 
     public function storeAdmin(Request $request)
@@ -449,6 +449,6 @@ class OffreController extends Controller
     public function showAdmin($id)
     {
         $o = Offre::find($id);
-        return view('offres/display_offres_admin', compact('o'));
+        return view('offres/admin/display_offres_admin', compact('o'));
     }
 }

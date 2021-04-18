@@ -59,6 +59,7 @@ Route::get('/profil/my-profile', 'ProfilController@myProfile')->name('profil.myP
 Route::get('/profil/download/{filename}', 'ProfilController@getCV')->name('profil.getCV');
 Route::get('/profil/nominate/{id}', 'ProfilController@nominateAdmin')->name('profil.nominate');
 Route::get('/profil/remove/{id}', 'ProfilController@removeAdmin')->name('profil.remove');
+Route::get('/profil/applicants/{id}', 'ProfilController@listApplicants')->name('profil.applicants');
 
 Route::resource('profil', 'ProfilController');
 Route::get('/profil/show/{id}', 'ProfilController@show')->name('profil.show');

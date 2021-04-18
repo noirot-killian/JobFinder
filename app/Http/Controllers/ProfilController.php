@@ -16,7 +16,7 @@ class ProfilController extends Controller
     public function __construct() 
     { 
         $this->middleware('auth'); 
-        $this->middleware('admin')->except(['getCV','myProfile']);  
+        $this->middleware('admin')->except(['show','getCV','myProfile','listApplicants']);  
     } 
     
     /**
@@ -32,11 +32,11 @@ class ProfilController extends Controller
         {
             $request->session()->flash('errors', "Il n'y a aucun utilisateur sur le site.");
             $tabCateg = Categorie::pluck('designation', 'id');
-            return view('profils/create_profils',compact('tabCateg'));
+            return view('profils/admin/create_profils',compact('tabCateg'));
         }
         else
         {
-            return view('profils/list_profils', compact('tab'));
+            return view('profils/admin/list_profils', compact('tab'));
         }
     }
 
@@ -48,7 +48,7 @@ class ProfilController extends Controller
     public function create()
     {
         $tabCateg = Categorie::pluck('designation', 'id');
-        return view('profils/create_profils',compact('tabCateg'));
+        return view('profils/admin/create_profils',compact('tabCateg'));
     }
 
     /**
@@ -157,7 +157,7 @@ class ProfilController extends Controller
         $tabCateg = Categorie::pluck('designation', 'id');
         $name = DB::table('users')->where('profil_id', $id)->value('name');
         $email = DB::table('users')->where('profil_id', $id)->value('email');
-        return view('profils/modify_profils', compact('p','tabCateg','name','email'));
+        return view('profils/admin/modify_profils', compact('p','tabCateg','name','email'));
     }
 
     /**
@@ -271,7 +271,7 @@ class ProfilController extends Controller
     public function myProfile()
     {
         $p = Profil::find(auth()->user()->profil_id);
-        return view('profils\my_profile', compact('p'));
+        return view('profils/user/my_profile', compact('p'));
     }
 
     public function nominateAdmin($id, Request $request)
@@ -290,5 +290,39 @@ class ProfilController extends Controller
         $p->save();
         $request->session()->flash('success', "L'utilisateur a perdu son accès administrateur.");
         return redirect()->route('profil.index');
+    }
+
+    public function listApplicants($id, Request $request) //applicant = postulant en anglais
+    {
+        $tab = Profil::with(['categorie','profil_postuler'])->get();
+
+        foreach ($tab as $ligne) 
+        {
+            if ($ligne->profil_postuler->isEmpty()==false)
+            {
+                $tabPostulants[]=$ligne;
+            }
+        }
+
+        if(empty($tabPostulants))
+        {
+            $tab = Offre::with(['type','categorie','profil_postuler'])->get();
+
+            foreach ($tab as $ligne) 
+            {
+                if ($ligne->profil_id == auth()->user()->profil_id)
+                {
+                    $tabOffers[]=$ligne;
+                }
+            }
+
+            $request->session()->flash('errors', "Personne n'a postulé à cette offre.");
+            return view('offres/user/my_offers', compact('tabOffers'));
+        }
+
+        else
+        {
+            return view('profils/user/list_applicants', compact('tabPostulants'));
+        }
     }
 }

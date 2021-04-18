@@ -23,6 +23,7 @@
 	      <th scope="col">Entreprise</th>
 	      <th scope="col">Ville</th>
 	      <th scope="col">Détails</th>
+	      <th scope="col">Postulants</th>
 	    </tr>
 	</thead>
 	<tbody>
@@ -34,7 +35,8 @@
 		      	<td>{{\Carbon\Carbon::parse($ligne->date_debut)->translatedFormat('d/m/Y')}}</td>
 		      	<td>{{$ligne->entreprise}}</td>
 		        <td>{{$ligne->ville}}</td>
-		        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>
+		        <td> <a href="{{route('offre.show',['id'=>$ligne->id])}}" class="btn btn-secondary">Voir</a> </td>
+		        <td> <a href="{{route('profil.applicants',['id'=>$ligne->id])}}" class="btn btn-primary">Voir</a> </td>
 		    </tr>	
   		@endforeach
   	</tbody>

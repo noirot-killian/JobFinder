@@ -13,7 +13,7 @@ class Profil extends Model
 
     public function profil_postuler()
     {
-        return $this->belongsToMany('App\Offre');
+        return $this->belongsToMany('App\Offre','offre_profil_postuler');
     }
 
     public function profil_favoriser()

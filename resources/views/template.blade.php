@@ -79,6 +79,9 @@
                   <li class="nav-item active">
                     <a class="nav-link {{request()->routeis('profil.create') ? 'active' : '' }}" aria-current="page" href="{{route('profil.create')}}">Créer un profil</a>
                   </li>
+                  <li class="nav-item active">
+                    <a class="nav-link {{request()->routeis('profil.importView') ? 'active' : '' }}" aria-current="page" href="{{route('profil.importView')}}">Importer</a>
+                  </li>
                 @else
                   <li class="nav-item active"></li>
                 @endif

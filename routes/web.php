@@ -60,6 +60,8 @@ Route::get('/profil/download/{filename}', 'ProfilController@getCV')->name('profi
 Route::get('/profil/nominate/{id}', 'ProfilController@nominateAdmin')->name('profil.nominate');
 Route::get('/profil/remove/{id}', 'ProfilController@removeAdmin')->name('profil.remove');
 Route::get('/profil/applicants/{id}', 'ProfilController@listApplicants')->name('profil.applicants');
+Route::get('/profil/import-view', 'ProfilController@viewImportProfiles')->name('profil.importView');
+Route::post('/profil/import', 'ProfilController@importProfiles')->name('profil.import');
 
 Route::resource('profil', 'ProfilController');
 Route::get('/profil/show/{id}', 'ProfilController@show')->name('profil.show');

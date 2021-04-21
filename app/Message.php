@@ -10,8 +10,9 @@ class Message extends Model
     {
         return $this->belongsTo('App\Profil','emetteur_id');
     }
+
     public function profil_destinataire()
     {
-        return $this->belongsToMany('App\Profil','destinataire_id');
+        return $this->belongsTo('App\Profil','destinataire_id');
     }
 }

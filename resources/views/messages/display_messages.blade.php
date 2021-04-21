@@ -12,19 +12,27 @@
     </main>
 @stop
 @section('content')
-
+<br>
+<style>
+	.card-header
+	{
+		text-transform: uppercase;
+		font-weight: bold;
+		color: #0892A7;
+	}
+</style>
 <div class="container">
 	<div class="row">
 		@include('messages/contacts',['contacts' => $contacts, 'nbUnread' => $nbUnread])
 		<div class="col-md-7">
 			<div class="card">
 				<div class="card-header">
-					<strong>{{$interlocuteur->nom}} {{$interlocuteur->prenom}}</strong>
+					{{$interlocuteur->nom}} {{$interlocuteur->prenom}} ({{$interlocuteur->categorie->designation}})
 				</div>
 				<div class="card-body">
 					@foreach($messages as $message)
 						<div class="row">
-							<div class="col-md-10 {{$message->profil_emetteur->id !== $interlocuteur->id ? 'offset-md-10 text-right' : ''}}">
+							<div class="col-md-5 {{$message->profil_emetteur->id !== $interlocuteur->id ? 'offset-md-8 text-right' : ''}}">
 								<p>
 									<strong>
 										{{$message->profil_emetteur->id !== $interlocuteur->id ? 'Moi' : $message->profil_emetteur->nom.' '.$message->profil_emetteur->prenom}}

@@ -12,7 +12,13 @@
     </main>
 @stop
 @section('content')
-<div class="container">
-	@include('messages/contacts',['contacts' => $contacts, 'nbUnread' => $nbUnread])
+<br>
+
+<div class="container contacts">
+	<CENTER>
+		<p style="color: black; font-family: system-ui; font-size: 20px;"><strong>Sélectionner un utilisateur à qui envoyer un message :</strong></p>
+		<br>
+		@include('messages/contacts',['contacts' => $contacts, 'nbUnread' => $nbUnread])
+	</CENTER>
 </div>
 @stop

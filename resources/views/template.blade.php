@@ -10,7 +10,7 @@
     <title>JobFinder</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sticky-footer-navbar/">
-
+    
     <!-- Bootstrap core CSS -->
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/mycss.css')}}" rel="stylesheet">
@@ -62,6 +62,9 @@
                 <li class="nav-item active">
                   <a class="nav-link {{request()->routeis('profil.myProfile') ? 'active' : '' }}" aria-current="page" href="{{route('profil.myProfile')}}">Mon profil</a>
                 </li>
+                <li class="nav-item active"></li>
+                  <a class="nav-link {{request()->routeis('message.index') ? 'active' : '' }}" aria-current="page" href="{{route('message.index')}}">Messagerie</a>
+                </li>
               @else
                 @if(auth::check() && auth::user()->profil->isAdmin == 1)
                   <li class="nav-item active">
@@ -82,8 +85,9 @@
                   <li class="nav-item active">
                     <a class="nav-link {{request()->routeis('profil.importView') ? 'active' : '' }}" aria-current="page" href="{{route('profil.importView')}}">Importer</a>
                   </li>
-                @else
                   <li class="nav-item active"></li>
+                    <a class="nav-link {{request()->routeis('message.index') ? 'active' : '' }}" aria-current="page" href="{{route('message.index')}}">Messagerie</a>
+                  </li>
                 @endif
               @endif
             </ul>

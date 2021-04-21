@@ -54,6 +54,8 @@ Route::post('/offre/addPostulation/{idOffre}/{idProfil}', 'OffreController@addPo
 Route::post('/offre/removePostulation/{idOffre}/{idProfil}', 'OffreController@removePostulation')->name('offre.removePostulation');
 
 Route::resource('message', 'MessageController');
+Route::get('/message/show/{id}', 'MessageController@show')->name('message.show');
+Route::post('/message/show/{id}', 'MessageController@store');
 
 Route::get('/profil/my-profile', 'ProfilController@myProfile')->name('profil.myProfile');
 Route::get('/profil/download/{filename}', 'ProfilController@getCV')->name('profil.getCV');

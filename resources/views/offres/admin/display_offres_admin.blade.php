@@ -40,14 +40,11 @@
                 @if($o->isValid == 1 && $o->isArchived == 0)
 
                     <button type="button" class="btn btn-danger btnArchiv" id="'+key+'">Archiver</button>
-
-                @else
-
-                    <!-- <a href="{{route('offre.index')}}" class="btn btn-primary">Retour</a> -->
-
+                    
                 @endif
 
-            @endif 
+            @endif
+            <!-- <a href="{{route('offre.index')}}" class="btn btn-primary">Retour</a> -->
         </div>
 	</div>
     <!-- Modal de confirmation de validation -->

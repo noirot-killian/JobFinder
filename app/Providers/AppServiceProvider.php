@@ -28,8 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setLocale(config('app.locale'));
 
-        \Debugbar::disable();
-
         /**
          * Paginate a standard Laravel Collection.
          *

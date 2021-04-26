@@ -39,10 +39,12 @@
                 @if(empty($p->CV))
                   <p> Pas de CV ajouté. </p>
                 @else
-                  <a href="{{route('profil.getCV',['filename'=>$p->CV])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger son CV</b></a>
+                  <a href="{{asset('storage/cv_files/'.$p->CV)}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Voir son CV</b></a>
                 @endif
                 <br>
                 <button class="btn btn-outline-primary">Envoyer un message</button>
+                <br>
+                <a href="{{url()->previous()}}" class="btn btn-secondary" id="btnAnnuler">Annuler</a>
               </div>
             </div>
           </div>

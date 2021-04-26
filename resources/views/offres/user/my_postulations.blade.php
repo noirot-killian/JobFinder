@@ -43,7 +43,7 @@
 </table>
 
 <!-- Modal de confirmation d'annulation de postulation -->
-<div class="modal" tabindex="-1" role="dialog" id="modalAnnulationPostulation" style="display:none">
+<div class="modal" tabindex="-1" role="dialog" id="modalAnnulationPostulation{{$ligne->id}}" style="display:none">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -77,23 +77,27 @@
 
 	//Affichage de la modal au clic de la croix
     $(document).on('click',".fa-times",function(){
-        $("#modalAnnulationPostulation").show();
+        var id = $(this).attr('id');
+        $("#modalAnnulationPostulation"+id).show();
     });
 
     //Cachement des modal au clic de la croix
     $(document).on('click',".close",function(){
-        $("#modalAnnulationPostulation").hide();
+        var id = $(".fa-times").attr('id');
+        $("#modalAnnulationPostulation"+id).hide();
     });
 
     //Cachement des modal au clic du bouton "Annuler"
     $(document).on('click',".btnAnnuler",function(){
-        $("#modalAnnulationPostulation").hide();
+        var id = $(".fa-times").attr('id');
+        $("#modalAnnulationPostulation"+id).hide();
     });
 
     /* Au clic du bouton de confirmation "Annuler la postulation" */
     $(".btnConfAnnulPostu").click(function(e)
     {
     	var event = $(this);
+        var id = $(".fa-times").attr('id');
     	
     	//appel de notre API
 
@@ -107,7 +111,7 @@
 
 			success:function(data)
 			{
-				$("#modalAnnulationPostulation").hide();
+				$("#modalAnnulationPostulation"+id).hide();
 				$(".tr").addClass("ligne-rouge").delay("1").fadeOut(); //suppression de la ligne visuelle
 			}
 		});

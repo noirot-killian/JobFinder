@@ -67,83 +67,82 @@
 		        </td>
 		        <td>
               @if($ligne->isAdmin == 0)
-                <button type="button" class="btn btn-secondary btnNomi" id="'+key+'">Nommer admin</button>
+                <button type="button" class="btn btn-secondary btnNomi" id="{{$ligne->id}}">Nommer admin</button>
               @else
-                <button type="button" class="btn btn-danger btnRemove" id="'+key+'">Retirer admin</button>
+                <button type="button" class="btn btn-danger btnRemove" id="{{$ligne->id}}">Retirer admin</button>
               @endif
 		        </td>
 		        <td> 
-          			<button type="button" class="btn btn-danger btnSupp" id="'+key+'">Supprimer</button>
+          			<button type="button" class="btn btn-danger btnSupp" id="{{$ligne->id}}">Supprimer</button>
       			</td>
 		    </tr>	
+        <!-- Modal de confirmation de nomination -->
+        <div class="modal" tabindex="-1" role="dialog" id="modalNomination{{$ligne->id}}" style="display:none">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de nomination au poste d'administrateur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir nommer cet utilisateur administrateur du site ?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <a href="{{route('profil.nominate',['id'=>$ligne->id])}}" class="btn btn-primary">Confirmer</a>
+                  </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmation de dénomination -->
+        <div class="modal" tabindex="-1" role="dialog" id="modalDénomination{{$ligne->id}}" style="display:none">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de retrait au poste d'administrateur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir retirer à cet utilisateur ces droits d'accès administrateur ?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <a href="{{route('profil.remove',['id'=>$ligne->id])}}" class="btn btn-danger">Confirmer</a>
+                  </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmation de suppression -->
+        <div class="modal" tabindex="-1" role="dialog" id="modalSuppression{{$ligne->id}}" style="display:none">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de suppression</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer cet utilisateur ainsi que toutes les offres qu'il a proposé ?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    {!! Form::open(['url'=> route('profil.destroy',['id'=>$ligne->id]), 'method' => 'delete']) !!}
+                        <input class="btn btn-danger" type="submit" value="Supprimer" />
+                    {!! Form::close() !!}
+                  </div>
+              </div>
+            </div>
+        </div>
   		@endforeach
   	</tbody>
 </table>
-
-<!-- Modal de confirmation de nomination -->
-<div class="modal" tabindex="-1" role="dialog" id="modalNomination" style="display:none">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Confirmation de nomination au poste d'administrateur</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Êtes-vous sûr de vouloir nommer cet utilisateur administrateur du site ?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
-            <a href="{{route('profil.nominate',['id'=>$ligne->id])}}" class="btn btn-primary">Confirmer</a>
-          </div>
-      </div>
-    </div>
-</div>
-
-<!-- Modal de confirmation de dénomination -->
-<div class="modal" tabindex="-1" role="dialog" id="modalDénomination" style="display:none">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Confirmation de retrait au poste d'administrateur</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Êtes-vous sûr de vouloir retirer à cet utilisateur ces droits d'accès administrateur ?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
-            <a href="{{route('profil.remove',['id'=>$ligne->id])}}" class="btn btn-danger">Confirmer</a>
-          </div>
-      </div>
-    </div>
-</div>
-
-<!-- Modal de confirmation de suppression -->
-<div class="modal" tabindex="-1" role="dialog" id="modalSuppression" style="display:none">
-	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-      		<div class="modal-header">
-        		<h5 class="modal-title">Confirmation de suppression</h5>
-        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          			<span aria-hidden="true">&times;</span>
-        		</button>
-      		</div>
-      		<div class="modal-body">
-        		<p>Êtes-vous sûr de vouloir supprimer cet utilisateur ainsi que toutes les offres qu'il a proposé ?</p>
-      		</div>
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
-        		{!! Form::open(['url'=> route('profil.destroy',['id'=>$ligne->id]), 'method' => 'delete']) !!}
-          			<input class="btn btn-danger" type="submit" value="Supprimer" />
-        		{!! Form::close() !!}
-      		</div>
-    	</div>
-  	</div>
-</div>
 @stop
 
 @section('script')
@@ -158,31 +157,36 @@
 
 		//Affichage de la modal au clic du bouton "Supprimer"
     	$(document).on('click',".btnSupp",function(){
-      		$("#modalSuppression").show();
+          var id = $(this).attr('id');
+      		$("#modalSuppression"+id).show();
     	});
 
-      //Affichage de la modal au clic du bouton "Supprimer"
+      //Affichage de la modal au clic du bouton "Nominer"
       $(document).on('click',".btnNomi",function(){
-          $("#modalNomination").show();
+          var id = $(this).attr('id');
+          $("#modalNomination"+id).show();
       });
 
-      //Affichage de la modal au clic du bouton "Supprimer"
+      //Affichage de la modal au clic du bouton "Dénominer"
       $(document).on('click',".btnRemove",function(){
-          $("#modalDénomination").show();
+          var id = $(this).attr('id');
+          $("#modalDénomination"+id).show();
       });
 
     	//Cachement des modal au clic de la croix
     	$(document).on('click',".close",function(){
-      		$("#modalSuppression").hide();
-          $("#modalNomination").hide();
-          $("#modalDénomination").hide();
+          var id = $(".btnSupp").attr('id');
+      		$("#modalSuppression"+id).hide();
+          $("#modalNomination"+id).hide();
+          $("#modalDénomination"+id).hide();
     	});
 
     	//Cachement des modal au clic du bouton "Annuler"
     	$(document).on('click',".btnAnnuler",function(){
-      		$("#modalSuppression").hide();
-          $("#modalNomination").hide();
-          $("#modalDénomination").hide();
+      		var id = $(".btnSupp").attr('id');
+          $("#modalSuppression"+id).hide();
+          $("#modalNomination"+id).hide();
+          $("#modalDénomination"+id).hide();
     	});
 	});
 @stop

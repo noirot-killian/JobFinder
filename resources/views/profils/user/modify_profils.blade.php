@@ -104,6 +104,13 @@
             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirmer le mot de passe">
         </div>
      </div>
+     <div class="form-group" id="formAdresse">
+        <label for="commune"><b> Adresse : </b></label>
+        <input name="newAdresse" type="text" value="{{$p->adresse}}" class="form-control" id="commune" placeholder="Saisissez l'adresse">
+        @error('newAdresse')
+            <div class="alert alert-danger"> {{ $message }} </div> 
+        @enderror
+    </div>
     <div class="form-group" id="formVille">
         <label for="commune"><b> Ville : </b></label>
         <input name="newVille" type="text" value="{{$p->ville}}" class="form-control" id="commune" placeholder="Saisissez la ville">
@@ -115,13 +122,6 @@
         <label for="commune"><b> Code Postal : </b></label>
         <input name="newCP" type="text" value="{{$p->CP}}" class="form-control" id="commune" placeholder="Saisissez le Code postal">
         @error('newCP')
-            <div class="alert alert-danger"> {{ $message }} </div> 
-        @enderror
-    </div>
-    <div class="form-group" id="formAdresse">
-        <label for="commune"><b> Adresse : </b></label>
-        <input name="newAdresse" type="text" value="{{$p->adresse}}" class="form-control" id="commune" placeholder="Saisissez l'adresse">
-        @error('newAdresse')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
@@ -198,6 +198,7 @@
     </div>
   {!! Form::close() !!}
   <br>
+  <CENTER><a href="{{url()->previous()}}" class="btn btn-secondary" id="btnAnnuler">Annuler</a></CENTER>
 @stop
 @section('script')
     $(document).ready(function() 

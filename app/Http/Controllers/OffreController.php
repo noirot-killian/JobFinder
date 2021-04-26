@@ -30,10 +30,8 @@ class OffreController extends Controller
 
         if($tab->isEmpty())
         {
-            $request->session()->flash('errors', "Il n'y a aucune offre sur le site.");
-            $tabCateg = Categorie::pluck('designation', 'id');
-            $tabType = Type::pluck('nom', 'id');
-            return view('offres/user/create_offres',compact('tabCateg'),compact('tabType'));
+            $request->session()->flash('success', "Il n'y a aucune offre sur le site.");
+            return redirect()->route('offre.create');
         }
         else
         {
@@ -47,10 +45,8 @@ class OffreController extends Controller
         
         if($tab->isEmpty())
         {
-            $request->session()->flash('errors', "Il n'y a aucune offre sur le site.");
-            $tabCateg = Categorie::pluck('designation', 'id');
-            $tabType = Type::pluck('nom', 'id');
-            return view('offres/admin/create_offres_admin',compact('tabCateg'),compact('tabType'));
+            $request->session()->flash('success', "Il n'y a aucune offre sur le site.");
+            return redirect()->route('offre.createAdmin');
         }
         else
         {
@@ -60,24 +56,12 @@ class OffreController extends Controller
 
     public function listValidationAdmin(Request $request)
     {
-        $tab = Offre::with(['type','categorie','profil_favoriser'])->where('isValid', '=', 0)->get();
+        $tab = Offre::with(['type','categorie'])->where('isValid', '=', 0)->get();
 
         if($tab->isEmpty())
         {
             $request->session()->flash('errors', "Il n'y a aucune offre à valider.");
-            $tab = Offre::with(['type','categorie','profil_favoriser'])->where('isValid', '=', 1)->where('isArchived', '=', 0)->get();
-
-            if($tab->isEmpty())
-            {
-                $request->session()->flash('errors', "Il n'y a aucune offre sur le site et aucune offre à valider.");
-                $tabCateg = Categorie::pluck('designation', 'id');
-                $tabType = Type::pluck('nom', 'id');
-                return view('offres/admin/create_offres_admin',compact('tabCateg'),compact('tabType'));
-            }
-            else
-            {
-                return view('offres/admin/list_offres_admin', compact('tab'));
-            }
+            return redirect()->route('offre.listAdmin');
         }
         else
         {
@@ -254,7 +238,7 @@ class OffreController extends Controller
         $o = Offre::find($id);
         $o->delete();
         $request->session()->flash('success', "L'offre a été supprimée.");
-        return redirect()->route('offre.listAdmin');
+        return redirect()->route('offre.listValidation');
     }
 
     public function addFavorite($idOffre, $idProfil)
@@ -286,7 +270,7 @@ class OffreController extends Controller
         if(empty($tabFav))
         {
             $request->session()->flash('errors', "Vous n'avez pas d'offres mises en favoris.");
-            return view('offres/user/list_offres', compact('tab'));
+            return redirect()->route('offre.index');
         }
         else
         {
@@ -323,7 +307,7 @@ class OffreController extends Controller
         if(empty($tabPostu))
         {
             $request->session()->flash('errors', "Vous n'avez postuler à aucune offre.");
-            return view('offres/user/list_offres', compact('tab'));
+            return redirect()->route('offre.index');
         }
         else
         {
@@ -345,26 +329,13 @@ class OffreController extends Controller
 
         if(empty($tabOffers))
         {
-            $request->session()->flash('errors', "Vous n'avez proposé aucune offre.");
-            $tabCateg = Categorie::pluck('designation', 'id');
-            $tabType = Type::pluck('nom', 'id');
-            return view('offres/user/create_offres',compact('tabCateg'),compact('tabType'));
+            $request->session()->flash('success', "Vous n'avez proposé aucune offre.");
+            return redirect()->route('offre.create');
         }
         else
         {
             return view('offres/user/my_offers', compact('tabOffers'));
         }
-    }
-
-    public function getPDF($filename)
-    {
-        $file = storage_path()."\app\public\pdf_files\/".$filename;
-
-        $headers = array(
-        'Content-Type: application/pdf',
-        );
-    
-        return Response::download($file, "PDF_offre", $headers);
     }
 
     public function validation($id, Request $request)

@@ -12,8 +12,22 @@
     </main>
 @stop
 @section('content')
+<br>
+<p id="info">Les champs marqués d'un astérisque (*) sont obligatoires.</p>
+
 <style>
-    
+    #info
+    {
+        margin-left: 400px;
+        font-weight: bold;
+    }
+
+    #infoDateDeb
+    {
+        margin-left: 400px;
+        font-style: italic;
+    }
+
     #formIntitule, #formDescription, #formPDF
     {
         margin-top: 20px;
@@ -49,14 +63,14 @@
 {!! Form::open(['url' => route('offre.store'), 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
 	@csrf
 	<div class="form-group" id="formIntitule">
-        <label for="titre"><b> Intitulé : </b></label>
+        <label for="titre"><b>* Intitulé : </b></label>
         <input name="intitule" value="{{old('intitule')}}" type="text" class="form-control" id="titre" placeholder="Saisissez l'intitulé de l'offre">
         @error('intitule')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
     <div class="form-group" id="formDescription">
-        <label for="desc"><b> Description : </b></label>
+        <label for="desc"><b>* Description : </b></label>
         <textarea name="description" id="desc" class="form-control"placeholder="Saisissez une description">{{old('description')}}</textarea>
         @error('description')
             <div class="alert alert-danger"> {{ $message }} </div> 
@@ -64,7 +78,7 @@
     </div>
     <br>
     <div id="formCateg">
-        <label><b> Catégorie : </b></label>
+        <label><b>* Catégorie : </b></label>
         <div>
             {!!Form::select('listCateg', $tabCateg, null, ['class'=>'form-control']) !!}
         </div>
@@ -74,7 +88,7 @@
     </div>
     <br>
     <div id="formType">
-        <label><b> Type : </b></label>
+        <label><b>* Type : </b></label>
         <div>
             {!!Form::select('listType', $tabType, null, ['class'=>'form-control']) !!}
         </div>
@@ -92,13 +106,13 @@
     </div>
     <br>
     <div class="form-group" id="formDateDeb">
-        <label for="dateD"><b> Date de début : </b></label>
+        <label for="dateD"><b>* Date de début : </b></label>
         <input name="dateDebut" type="date" value="{{old('dateDebut')}}" class="form-control" id="dateD">
         @error('dateDebut')
             <div class="alert alert-danger"> {{ $message }} </div> 
         @enderror
     </div>
-    <br>
+    <p id="infoDateDeb">La date de début doit être supérieure à la date du jour.</p>
     <div class="form-group" id="formDateFin">
         <label for="dateF"><b> Date de fin : </b></label>
         <input name="dateFin" type="date" value="{{old('dateFin')}}" class="form-control" id="dateF">
@@ -108,7 +122,7 @@
     </div>
     <br>
     <div class="form-group" id="formVille">
-        <label for="commune"><b> Ville : </b></label>
+        <label for="commune"><b>* Ville : </b></label>
         <input name="ville" type="text" value="{{old('ville')}}" class="form-control" id="commune" placeholder="Saisissez la ville">
         @error('ville')
             <div class="alert alert-danger"> {{ $message }} </div> 
@@ -116,7 +130,7 @@
     </div>
     <br>
     <div class="form-group" id="formEntreprise">
-        <label for="entrep"><b> Entreprise : </b></label>
+        <label for="entrep"><b>* Entreprise : </b></label>
         <input name="entreprise" type="text" class="form-control" value="{{old('entreprise')}}" id="entrep" placeholder="Saisissez le nom de l'entreprise">
         @error('entreprise')
             <div class="alert alert-danger"> {{ $message }} </div> 

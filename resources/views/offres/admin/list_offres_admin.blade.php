@@ -43,33 +43,34 @@
 		        	<a href="{{route('offre.edit',['id'=>$ligne->id])}}" class="btn btn-secondary">Modifier</a> 
 		        </td>
 		        <td> 
-          			<button type="button" class="btn btn-danger btnArchiv" id="'+key+'">Archiver</button>
+          			<button type="button" class="btn btn-danger btnArchiv" id="{{$ligne->id}}">Archiver</button>
       			</td>
 		    </tr>	
+		    <!-- Modal de confirmation -->
+			<div class="modal" tabindex="-1" role="dialog" id="modalArchivage{{$ligne->id}}" style="display:none">
+				<div class="modal-dialog" role="document">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<h5 class="modal-title">Confirmation d'archivage</h5>
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          			<span aria-hidden="true">&times;</span>
+			        		</button>
+			      		</div>
+			      		<div class="modal-body">
+			        		<p>Êtes-vous sûr de vouloir archiver cette offre ?</p>
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
+			        		<a href="{{route('offre.archive',['id'=>$ligne->id])}}" class="btn btn-danger">Archiver</a>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
   		@endforeach
   	</tbody>
 </table>
 
-<!-- Modal de confirmation -->
-<div class="modal" tabindex="-1" role="dialog" id="modalArchivage" style="display:none">
-	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-      		<div class="modal-header">
-        		<h5 class="modal-title">Confirmation d'archivage</h5>
-        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          			<span aria-hidden="true">&times;</span>
-        		</button>
-      		</div>
-      		<div class="modal-body">
-        		<p>Êtes-vous sûr de vouloir archiver cette offre ?</p>
-      		</div>
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
-        		<a href="{{route('offre.archive',['id'=>$ligne->id])}}" class="btn btn-danger">Archiver</a>
-      		</div>
-    	</div>
-  	</div>
-</div>
+
 @stop
 
 @section('script')
@@ -84,17 +85,20 @@
 
 		//Affichage de la modal au clic du bouton "Archiver"
     	$(document).on('click',".btnArchiv",function(){
-      		$("#modalArchivage").show();
+      		var id = $(this).attr('id');
+      		$("#modalArchivage"+id).show();
     	});
 
     	//Cachement de la modal au clic de la croix
     	$(document).on('click',".close",function(){
-      		$("#modalArchivage").hide();
+    		var id = $(".btnArchiv").attr('id');
+      		$("#modalArchivage"+id).hide();
     	});
 
     	//Cachement de la modal au clic du bouton "Annuler"
     	$(document).on('click',".btnAnnuler",function(){
-      		$("#modalArchivage").hide();
+    		var id = $(".btnArchiv").attr('id');
+      		$("#modalArchivage"+id).hide();
     	});
 	});
 @stop

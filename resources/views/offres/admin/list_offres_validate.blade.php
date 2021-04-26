@@ -40,59 +40,58 @@
 		        	<a href="{{route('offre.showAdmin',['id'=>$ligne->id])}}" class="btn btn-secondary">Détails</a> 
 		        </td>
 		        <td> 
-		        	<button type="button" class="btn btn-primary btnValid" id="'+key+'">Valider</button> 
+		        	<button type="button" class="btn btn-primary btnValid" id="{{$ligne->id}}">Valider</button> 
 		        </td>
 		        <td> 
-          			<button type="button" class="btn btn-danger btnSupp" id="'+key+'">Supprimer</button>
+          			<button type="button" class="btn btn-danger btnSupp" id="{{$ligne->id}}">Supprimer</button>
       			</td>
-		    </tr>	
+		    </tr>
+        <!-- Modal de confirmation de validation -->
+        <div class="modal" tabindex="-1" role="dialog" id="modalValidation{{$ligne->id}}" style="display:none">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de validation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir valider cette offre ?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    <a href="{{route('offre.validate',['id'=>$ligne->id])}}" class="btn btn-primary">Valider</a>
+                  </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmation de suppression -->
+        <div class="modal" tabindex="-1" role="dialog" id="modalSuppression{{$ligne->id}}" style="display:none">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Confirmation de suppression</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer cette offre ?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
+                    {!! Form::open(['url'=> route('offre.destroy',['id'=>$ligne->id]), 'method' => 'delete']) !!}
+                        <input class="btn btn-danger" type="submit" value="Supprimer" />
+                    {!! Form::close() !!}
+                  </div>
+              </div>
+            </div>
+        </div>
   		@endforeach
   	</tbody>
 </table>
-
-<!-- Modal de confirmation de validation -->
-<div class="modal" tabindex="-1" role="dialog" id="modalValidation" style="display:none">
-	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-      		<div class="modal-header">
-        		<h5 class="modal-title">Confirmation de validation</h5>
-        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          			<span aria-hidden="true">&times;</span>
-        		</button>
-      		</div>
-      		<div class="modal-body">
-        		<p>Êtes-vous sûr de vouloir valider cette offre ?</p>
-      		</div>
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-secondary btnAnnuler" data-dismiss="modal">Annuler</button>
-        		<a href="{{route('offre.validate',['id'=>$ligne->id])}}" class="btn btn-primary">Valider</a>
-      		</div>
-    	</div>
-  	</div>
-</div>
-
-<!-- Modal de confirmation de suppression -->
-<div class="modal" tabindex="-1" role="dialog" id="modalSuppression" style="display:none">
-	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-      		<div class="modal-header">
-        		<h5 class="modal-title">Confirmation de suppression</h5>
-        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          			<span aria-hidden="true">&times;</span>
-        		</button>
-      		</div>
-      		<div class="modal-body">
-        		<p>Êtes-vous sûr de vouloir supprimer cette offre ?</p>
-      		</div>
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
-        		{!! Form::open(['url'=> route('offre.destroy',['id'=>$ligne->id]), 'method' => 'delete']) !!}
-          			<input class="btn btn-danger" type="submit" value="Supprimer" />
-        		{!! Form::close() !!}
-      		</div>
-    	</div>
-  	</div>
-</div>
 @stop
 
 @section('script')
@@ -107,24 +106,28 @@
 
 		//Affichage de la modal au clic du bouton "Valider"
     	$(document).on('click',".btnValid",function(){
-      		$("#modalValidation").show();
+          var id = $(this).attr('id');
+      		$("#modalValidation"+id).show();
     	});
 
 		//Affichage de la modal au clic du bouton "Supprimer"
     	$(document).on('click',".btnSupp",function(){
-      		$("#modalSuppression").show();
+          var id = $(this).attr('id');
+      		$("#modalSuppression"+id).show();
     	});
 
     	//Cachement des modal au clic de la croix
     	$(document).on('click',".close",function(){
-      		$("#modalSuppression").hide();
-      		$("#modalValidation").hide();
+          var id = $(".btnValid").attr('id');
+      		$("#modalValidation"+id).hide();
+          $("#modalSuppression"+id).hide();
     	});
 
     	//Cachement des modal au clic du bouton "Annuler"
     	$(document).on('click',".btnAnnuler",function(){
-      		$("#modalSuppression").hide();
-      		$("#modalValidation").hide();
+      		var id = $(".btnValid").attr('id');
+          $("#modalValidation"+id).hide();
+          $("#modalSuppression"+id).hide();
     	});
 	});
 @stop

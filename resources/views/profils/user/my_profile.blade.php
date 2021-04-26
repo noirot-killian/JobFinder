@@ -36,8 +36,10 @@
                 <p class="text-secondary mb-1">{{Auth::user()->email}}</p>
                 <p class="text-secondary mb-1">{{$p->tel}}</p>
                 <br> 
-                <a href="{{route('profil.getCV',['filename'=>$p->CV])}}" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Télécharger mon CV</b></a>
-                <a href="{{route('profil.edit',['id'=>$p->id])}}" class="btnSupp" style="background-color: #00B2CD; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Modifier mes données personnelles</b></a>
+                <a href="{{asset('storage/cv_files/'.$p->CV)}}" target="_blank" style="background-color: #333ab7; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Voir mon CV</b></a>
+
+                <a href="{{route('profil.edit',['id'=>$p->id])}}" class="btnEdit" style="background-color: #00B2CD; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Modifier mes données personnelles</b></a>
+
                 <a href="#" class="btnSupp" style="background-color: #F10D0D; color: #fff; padding: 12px; display:block; text-decoration: none;"><b>Supprimer mon compte</b></a>
               </div>
             </div>
@@ -91,7 +93,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary btnAnnuler" data-dismiss="modal">Annuler</button>
-            {!! Form::open(['url'=> route('profil.destroy',['id'=>$p->id]), 'method' => 'delete']) !!}
+            {!! Form::open(['url'=> route('profil.destroyMyProfile',['id'=>$p->id]), 'method' => 'delete']) !!}
                 <input class="btn btn-danger" type="submit" value="Supprimer" />
             {!! Form::close() !!}
           </div>

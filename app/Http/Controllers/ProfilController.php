@@ -7,6 +7,7 @@ use App\Categorie;
 use App\Profil;
 use App\User;
 use App\Offre;
+use App\Message;
 use Illuminate\Support\Facades\Hash;
 use Response;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class ProfilController extends Controller
     public function __construct() 
     { 
         $this->middleware('auth'); 
-        $this->middleware('admin')->except(['edit','update','show','getCV','myProfile','listApplicants']);  
+        $this->middleware('admin')->except(['edit','update','show','getCV','myProfile','listApplicants','destroyMyProfile']);  
     } 
     
     /**
@@ -66,7 +67,7 @@ class ProfilController extends Controller
         'ville' => 'required|string|max:25',
         'adresse' => 'required|string|', 
         'cp' => 'required|string|max:10',
-        'tel' => 'required|string|regex:/(0)[0-9]{9}/|max:12',
+        'tel' => 'nullable|regex:/(0)[0-9]{9}/|max:12',
         'listCateg' => 'required',
         'admin' => 'required',
         'notif' => 'required',
@@ -122,16 +123,6 @@ class ProfilController extends Controller
         return redirect()->route('profil.create');
     }
 
-    public function getCV($filename)
-    {
-        $file = storage_path()."\app\public\cv_files\/".$filename;
-
-        $headers = array(
-        'Content-Type: application/pdf',
-        );
-    
-        return Response::download($file, "CV_postulant", $headers);
-    }
 
     /**
      * Display the specified resource.
@@ -214,7 +205,7 @@ class ProfilController extends Controller
         }
 
         $p->categorie_id = $request->input('newListCateg');
-        $p->isFirstCo = 1;
+        $p->isFirstCo = 0;
         $p->isNotified = $request->input('newNotif');
         $p->isContactable = $request->input('newJoignable');
         $p->save();
@@ -239,7 +230,15 @@ class ProfilController extends Controller
     {
         $p = Profil::find($id);
 
-        $offres = Offre::all()->where('profil_id', '=', $id);
+        $offres = Offre::where('profil_id', '=', $id)->get();
+
+        $messages = Message::where(function($query) use($idProfil){
+                                $query->where('emetteur_id', $idProfil);
+                                })
+                        ->orWhere(function($query) use($idProfil){
+                                $query->where('destinataire_id', $idProfil);
+                                })
+                        ->get();
 
         $idUser = DB::table('users')->where('profil_id', $id)->value('id');
 
@@ -249,30 +248,72 @@ class ProfilController extends Controller
             {
                 Offre::destroy($ligne->id);
             }
-
-            User::destroy($idUser);
-
-            $p->delete();
-
-            $request->session()->flash('success', "L'utilisateur et ses offres ont été supprimés.");
-            return redirect()->route('profil.index');
         }
 
-        else
+        if($messages->isNotEmpty())
         {
-            User::destroy($idUser);
+            foreach ($messages as $ligne) 
+            {
+                Message::destroy($ligne->id);
+            }
+        }
+        
+        User::destroy($idUser);
 
-            $p->delete();
+        $p->delete();
 
-            $request->session()->flash('success', "L'utilisateur et ses offres ont été supprimés.");
-            return redirect()->route('profil.index');
-        }  
+        $request->session()->flash('success', "L'utilisateur et ses offres ont été supprimés.");
+        
+        return redirect()->route('profil.index');
     }
 
     public function myProfile()
     {
         $p = Profil::find(auth()->user()->profil_id);
         return view('profils/user/my_profile', compact('p'));
+    }
+
+    public function destroyMyProfile($id, Request $request)
+    {
+        $idProfil = $id;
+
+        app('App\Http\Controllers\Auth\LoginController')->logout($request);
+
+        $p = Profil::find($idProfil);
+
+        $offres = Offre::where('profil_id', '=', $idProfil)->get();
+
+        $messages = Message::where(function($query) use($idProfil){
+                                $query->where('emetteur_id', $idProfil);
+                                })
+                        ->orWhere(function($query) use($idProfil){
+                                $query->where('destinataire_id', $idProfil);
+                                })
+                        ->get();
+
+        $idUser = DB::table('users')->where('profil_id', $idProfil)->value('id');
+
+        if($offres->isNotEmpty())
+        {
+            foreach ($offres as $ligne) 
+            {
+                Offre::destroy($ligne->id);
+            }
+        }
+
+        if($messages->isNotEmpty())
+        {
+            foreach ($messages as $ligne) 
+            {
+                Message::destroy($ligne->id);
+            }
+        }
+
+        User::destroy($idUser);
+
+        $p->delete();
+
+        return redirect('/');
     }
 
     public function nominateAdmin($id, Request $request)

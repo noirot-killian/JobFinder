@@ -173,7 +173,7 @@
     </div>      
 {!! Form::close() !!}
 <br>
-<CENTER><a href="{{route('offre.index')}}" class="btn btn-secondary" id="btnAnnuler">Annuler</a></CENTER>
+<CENTER><a href="{{url()->previous()}}" class="btn btn-secondary" id="btnAnnuler">Annuler</a></CENTER>
 <br><br>
 @stop
 @section('script')

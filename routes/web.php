@@ -37,8 +37,6 @@ Route::post('/offre/storeAdmin', 'OffreController@storeAdmin')->name('offre.stor
 
 Route::get('/offre/showAdmin/{id}', 'OffreController@showAdmin')->name('offre.showAdmin');
 
-Route::get('/offre/download/{filename}', 'OffreController@getPDF')->name('profil.getPDF');
-
 Route::resource('offre', 'OffreController');
 Route::get('/offre/show/{id}', 'OffreController@show')->name('offre.show');
 Route::get('/offre/edit/{id}', 'OffreController@edit')->name('offre.edit');
@@ -58,7 +56,9 @@ Route::get('/message/show/{id}', 'MessageController@show')->name('message.show')
 Route::post('/message/show/{id}', 'MessageController@store');
 
 Route::get('/profil/my-profile', 'ProfilController@myProfile')->name('profil.myProfile');
-Route::get('/profil/download/{filename}', 'ProfilController@getCV')->name('profil.getCV');
+
+Route::delete('/profil/destroy-profile/{id}', 'ProfilController@destroyMyProfile')->name('profil.destroyMyProfile');
+
 Route::get('/profil/nominate/{id}', 'ProfilController@nominateAdmin')->name('profil.nominate');
 Route::get('/profil/remove/{id}', 'ProfilController@removeAdmin')->name('profil.remove');
 Route::get('/profil/applicants/{id}', 'ProfilController@listApplicants')->name('profil.applicants');
